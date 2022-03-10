@@ -1,0 +1,35 @@
+{
+    "name": "the_three_broomsticks",
+    "short_name": "the_three_broomsticks",
+    "start_url": ".",
+    "display": "standalone",
+    "background_color": "#0175C2",
+    "theme_color": "#0175C2",
+    "description": "The Three Broomsticks is one of the major attractions of Hogsmeade for the staff of Hogwarts, and the students on their infrequent Hogsmeade weekends. Located on the main street of Hogsmeade village, it is a warm and cheerful place, presided over by Madam Rosmerta, a warm, cheerful, and curvaceous witch.",
+    "orientation": "portrait-primary",
+    "prefer_related_applications": false,
+    "icons": [
+        {
+            "src": "icons/Icon-192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "icons/Icon-512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        },
+        {
+            "src": "icons/Icon-maskable-192.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "maskable"
+        },
+        {
+            "src": "icons/Icon-maskable-512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "maskable"
+        }
+    ]
+}
