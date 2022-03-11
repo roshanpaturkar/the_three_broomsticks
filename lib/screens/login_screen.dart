@@ -43,9 +43,8 @@ class _LoginScreenState extends State<LoginScreen> {
       });
 
       try {
-        await FirebaseAuth.instance
-            .signInWithEmailAndPassword(
-                email: email.trim(), password: password.trim());
+        await FirebaseAuth.instance.signInWithEmailAndPassword(
+            email: email.trim(), password: password.trim());
 
         setState(() {
           startBouncer = false;
