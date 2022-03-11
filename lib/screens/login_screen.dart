@@ -20,6 +20,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   bool _isHidden = true;
   bool startBouncer = false;
+  bool startForgetPasswordBouncer = false;
   final emailFieldController = TextEditingController();
   final passwordFieldController = TextEditingController();
 
@@ -73,6 +74,46 @@ class _LoginScreenState extends State<LoginScreen> {
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         showSnackBar('Please provide email and password!'),
+      );
+    }
+  }
+
+  Future<void> forgetPassword(BuildContext context) async {
+    if (email != '') {
+      try {
+        setState(() {
+          startForgetPasswordBouncer = true;
+        });
+
+        await FirebaseAuth.instance.sendPasswordResetEmail(email: email.trim());
+
+        setState(() {
+          startForgetPasswordBouncer = false;
+        });
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          showSnackBar('Password reset link sent to you email.'),
+        );
+      } on FirebaseAuthException catch (e) {
+        setState(() {
+          startForgetPasswordBouncer = false;
+        });
+
+        print(e);
+
+        if (e.code == 'user-not-found') {
+          ScaffoldMessenger.of(context).showSnackBar(
+            showSnackBar('No user found for that email.'),
+          );
+        } else if (e.code == 'invalid-email') {
+          ScaffoldMessenger.of(context).showSnackBar(
+            showSnackBar('Email address is not valid.'),
+          );
+        }
+      }
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        showSnackBar('Please provide email!'),
       );
     }
   }
@@ -204,20 +245,22 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        showSnackBar('This feature is currently unavailable!'),
-                      );
-                      // Navigator.pushNamed(context, ForgetPassword.id);
+                      forgetPassword(context);
                     },
                     child: Container(
                       width: 350,
-                      child: const Text(
-                        'Forget Password?',
-                        textAlign: TextAlign.right,
-                        style: TextStyle(
-                          color: Color(0xFF6F7075),
-                        ),
-                      ),
+                      child: startForgetPasswordBouncer
+                          ? const SpinKitDoubleBounce(
+                              color: Colors.white,
+                              size: 30.0,
+                            )
+                          : const Text(
+                              'Forget Password?',
+                              textAlign: TextAlign.right,
+                              style: TextStyle(
+                                color: Color(0xFF6F7075),
+                              ),
+                            ),
                     ),
                   ),
                   const SizedBox(
