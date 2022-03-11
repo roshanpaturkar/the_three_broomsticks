@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:the_three_broomsticks/screens/login_screen.dart';
 
 class StartScreen extends StatefulWidget {
   static const String id = 'start_screen';
@@ -119,11 +120,7 @@ class _StartScreenState extends State<StartScreen> {
                     children: [
                       TextButton(
                         onPressed: () async {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            showSnackBar('Coming soon....!'),
-                          );
-
-                          // Navigator.pushNamed(context, LoginScreen.id);
+                          Navigator.pushNamed(context, LoginScreen.id);
                         },
                         child: Text(
                           start,

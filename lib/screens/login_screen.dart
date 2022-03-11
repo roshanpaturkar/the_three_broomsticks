@@ -1,9 +1,12 @@
 import 'dart:io';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:move_to_background/move_to_background.dart';
+import 'package:the_three_broomsticks/screens/dashboard_screen.dart';
+import 'package:the_three_broomsticks/screens/register_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   static const String id = 'login_screen';
@@ -20,8 +23,8 @@ class _LoginScreenState extends State<LoginScreen> {
   final emailFieldController = TextEditingController();
   final passwordFieldController = TextEditingController();
 
-  var email = 'paturkarr@gmail.com';
-  var password = 'redhat';
+  var email = '';
+  var password = '';
 
   SnackBar showSnackBar(var message) {
     return SnackBar(content: Text(message));
@@ -31,6 +34,48 @@ class _LoginScreenState extends State<LoginScreen> {
     setState(() {
       _isHidden = !_isHidden;
     });
+  }
+
+  Future<void> signInWithEmailAndPassword(BuildContext context) async {
+    if (email != '' && password != '') {
+      setState(() {
+        startBouncer = true;
+      });
+
+      try {
+        await FirebaseAuth.instance
+            .signInWithEmailAndPassword(
+                email: email.trim(), password: password.trim());
+
+        setState(() {
+          startBouncer = false;
+        });
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          showSnackBar('Happy to see you again!'),
+        );
+
+        Navigator.pushNamed(context, DashboardScreen.id);
+      } on FirebaseAuthException catch (e) {
+        setState(() {
+          startBouncer = false;
+        });
+
+        if (e.code == 'user-not-found') {
+          ScaffoldMessenger.of(context).showSnackBar(
+            showSnackBar('No user found for that email.'),
+          );
+        } else if (e.code == 'wrong-password') {
+          ScaffoldMessenger.of(context).showSnackBar(
+            showSnackBar('Wrong password provided for that user.'),
+          );
+        }
+      }
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        showSnackBar('Please provide email and password!'),
+      );
+    }
   }
 
   @override
@@ -160,6 +205,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   GestureDetector(
                     onTap: () {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        showSnackBar('This feature is currently unavailable!'),
+                      );
                       // Navigator.pushNamed(context, ForgetPassword.id);
                     },
                     child: Container(
@@ -188,11 +236,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       children: [
                         TextButton(
                           onPressed: () {
-                            setState(() {
-                              startBouncer = true;
-                            });
-                            // signInWithEmailAndPassword(context);
-                            //Navigator.pushNamed(context, DashboardScreen.id);
+                            signInWithEmailAndPassword(context);
                           },
                           child: const Text(
                             'Sign In',
@@ -250,7 +294,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      // Navigator.pushNamed(context, RegisterScreen.id);
+                      Navigator.pushNamed(context, RegisterScreen.id);
                     },
                     child: Container(
                       child: Row(
