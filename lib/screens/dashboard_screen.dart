@@ -54,12 +54,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         print('Profile hit!');
                       },
                       child: const CircleAvatar(
-                        foregroundImage: NetworkImage(
-                            'https://pbs.twimg.com/profile_images/1139924988595539968/WyLYsuBM_400x400.jpg'),
-                        backgroundImage: AssetImage('images/avatar.png'),
-                        //backgroundImage: AssetImage('images/roshan.jpg'),
+                        // foregroundImage: NetworkImage(
+                        //     'https://pbs.twimg.com/profile_images/1139924988595539968/WyLYsuBM_400x400.jpg'),
+                        // backgroundImage: AssetImage('images/gf.png'),
+                        backgroundImage: AssetImage('images/gryffindor.png'),
                         radius: 25,
-                        backgroundColor: Colors.white,
+                        backgroundColor: const Color(0xFF0181A20),
                       ),
                     )
                   ],

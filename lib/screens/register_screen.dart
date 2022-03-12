@@ -27,6 +27,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   var fName = '';
   var lName = '';
   var nickName = '';
+  var house = 'Gryffindor';
   var email = '';
   var mobile = '';
   var password = '';
@@ -56,11 +57,24 @@ class _RegisterScreenState extends State<RegisterScreen> {
         UserCredential userCredential = await FirebaseAuth.instance
             .createUserWithEmailAndPassword(email: email, password: password);
 
+        var imageMap = {
+          'gryffindor':
+              'https://firebasestorage.googleapis.com/v0/b/d3broomsticks.appspot.com/o/images%2Fhouses%2Fgryffindor.png?alt=media&token=4aa8f20d-fbb6-4dc5-bd47-8677e6087d7d',
+          'hufflepuff':
+              'https://firebasestorage.googleapis.com/v0/b/d3broomsticks.appspot.com/o/images%2Fhouses%2Fhufflepuff.png?alt=media&token=b506e8cc-7390-4d22-9eac-c883e3d0ded3',
+          'ravenclaw':
+              'https://firebasestorage.googleapis.com/v0/b/d3broomsticks.appspot.com/o/images%2Fhouses%2Fravenclaw.png?alt=media&token=2aaaccd0-b4ce-4ad5-a548-a00e569bf566',
+          'slytherin':
+              'https://firebasestorage.googleapis.com/v0/b/d3broomsticks.appspot.com/o/images%2Fhouses%2Fslytherin.png?alt=media&token=6ca6e67f-9395-47f4-9281-497622eecd42'
+        };
+
         var userData = {
           'uid': userCredential.user?.uid,
           'firstName': fName.trim(),
           'lastName': lName.trim(),
           'nickname': nickName.trim(),
+          'house': house.trim().toLowerCase(),
+          'imageUrl': imageMap[house.toLowerCase()],
           'email': email.trim(),
           'mobile': mobile.trim(),
         };
@@ -246,6 +260,59 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         nickName = value;
                         print(nickName);
                       },
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 14,
+                ),
+                Container(
+                  width: 350,
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF262A34),
+                    borderRadius: BorderRadius.circular(24),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(30, 10, 30, 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          'Select House',
+                          style: TextStyle(
+                            color: Color(0xFF6F7075),
+                          ),
+                        ),
+                        DropdownButton<String>(
+                          hint: const Text('Select House'),
+                          value: house,
+                          elevation: 16,
+                          style: const TextStyle(
+                            color: Color(0xFF6F7075),
+                          ),
+                          underline: Container(
+                            height: 2,
+                            color: const Color(0xFF262A34),
+                          ),
+                          onChanged: (String? newValue) {
+                            setState(() {
+                              house = newValue!.toLowerCase();
+                              print(house);
+                            });
+                          },
+                          items: <String>[
+                            'Gryffindor',
+                            'Hufflepuff',
+                            'Ravenclaw',
+                            'Slytherin'
+                          ].map<DropdownMenuItem<String>>((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            );
+                          }).toList(),
+                        ),
+                      ],
                     ),
                   ),
                 ),

@@ -84,6 +84,16 @@ class _StartScreenState extends State<StartScreen> {
                     fontSize: 16,
                   ),
                 ),
+                const SizedBox(
+                  height: 16,
+                ),
+                Text(
+                  'Note: Currently App is highly unstable, we are following rolling release.',
+                  style: GoogleFonts.ubuntu(
+                    color: Colors.white,
+                    fontSize: 12,
+                  ),
+                ),
                 // Text(
                 //   'and use one another, even relate to',
                 //   style: GoogleFonts.ubuntu(
