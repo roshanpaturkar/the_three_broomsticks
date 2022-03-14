@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:the_three_broomsticks/screens/login_screen.dart';
 
@@ -130,7 +131,7 @@ class _StartScreenState extends State<StartScreen> {
                     children: [
                       TextButton(
                         onPressed: () async {
-                          Navigator.pushNamed(context, LoginScreen.id);
+                          Get.off(const LoginScreen());
                         },
                         child: Text(
                           start,

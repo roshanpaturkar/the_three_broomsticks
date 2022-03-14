@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:move_to_background/move_to_background.dart';
 import 'package:the_three_broomsticks/screens/dashboard_screen.dart';
@@ -55,7 +56,7 @@ class _LoginScreenState extends State<LoginScreen> {
           showSnackBar('Happy to see you again!'),
         );
 
-        Navigator.pushNamed(context, DashboardScreen.id);
+        Get.off(const DashboardScreen());
       } on FirebaseAuthException catch (e) {
         setState(() {
           startBouncer = false;
@@ -336,7 +337,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      Navigator.pushNamed(context, RegisterScreen.id);
+                      Get.to(const RegisterScreen());
                     },
                     child: Container(
                       child: Row(

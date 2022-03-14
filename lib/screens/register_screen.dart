@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:the_three_broomsticks/screens/dashboard_screen.dart';
 
@@ -58,13 +59,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
             .createUserWithEmailAndPassword(email: email, password: password);
 
         var imageMap = {
-          'gryffindor':
+          'Gryffindor':
               'https://firebasestorage.googleapis.com/v0/b/d3broomsticks.appspot.com/o/images%2Fhouses%2Fgryffindor.png?alt=media&token=4aa8f20d-fbb6-4dc5-bd47-8677e6087d7d',
-          'hufflepuff':
+          'Hufflepuff':
               'https://firebasestorage.googleapis.com/v0/b/d3broomsticks.appspot.com/o/images%2Fhouses%2Fhufflepuff.png?alt=media&token=b506e8cc-7390-4d22-9eac-c883e3d0ded3',
-          'ravenclaw':
+          'Ravenclaw':
               'https://firebasestorage.googleapis.com/v0/b/d3broomsticks.appspot.com/o/images%2Fhouses%2Fravenclaw.png?alt=media&token=2aaaccd0-b4ce-4ad5-a548-a00e569bf566',
-          'slytherin':
+          'Slytherin':
               'https://firebasestorage.googleapis.com/v0/b/d3broomsticks.appspot.com/o/images%2Fhouses%2Fslytherin.png?alt=media&token=6ca6e67f-9395-47f4-9281-497622eecd42'
         };
 
@@ -73,8 +74,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
           'firstName': fName.trim(),
           'lastName': lName.trim(),
           'nickname': nickName.trim(),
-          'house': house.trim().toLowerCase(),
-          'imageUrl': imageMap[house.toLowerCase()],
+          'house': house.trim(),
+          'imageUrl': imageMap[house],
           'email': email.trim(),
           'mobile': mobile.trim(),
         };
@@ -108,7 +109,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           showSnackBar("Welcome ${userData['firstName']}!"),
         );
 
-        Navigator.pushNamed(context, DashboardScreen.id);
+        Get.to(const DashboardScreen());
       } on FirebaseAuthException catch (e) {
         setState(() {
           startBouncer = false;
@@ -296,7 +297,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           ),
                           onChanged: (String? newValue) {
                             setState(() {
-                              house = newValue!.toLowerCase();
+                              house = newValue!;
                               print(house);
                             });
                           },
@@ -463,7 +464,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ),
                 GestureDetector(
                   onTap: () {
-                    Navigator.pop(context);
+                    Get.back();
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
