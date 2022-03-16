@@ -5,6 +5,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:the_three_broomsticks/screens/dashboard_screen.dart';
+import 'package:the_three_broomsticks/support/user_support.dart';
 
 class RegisterScreen extends StatefulWidget {
   static const String id = 'register_screen';
@@ -100,6 +101,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
         emailFieldController.clear();
         mobileFieldController.clear();
         passwordFieldController.clear();
+
+        await UserSupport.refreshUserDetails();
 
         setState(() {
           startBouncer = false;
