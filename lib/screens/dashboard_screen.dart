@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:move_to_background/move_to_background.dart';
 
@@ -14,6 +15,8 @@ class DashboardScreen extends StatefulWidget {
 }
 
 class _DashboardScreenState extends State<DashboardScreen> {
+  final box = GetStorage();
+
   SnackBar showSnackBar(var message) {
     return SnackBar(content: Text(message));
   }
@@ -40,8 +43,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
                     Text(
-                      // "Hello ${Support.capitalizeName(kFirstName)}",
-                      'Hello User!',
+                      "Hello ${box.read('nickname').toString().split(' ')[0]}",
                       style: GoogleFonts.workSans(
                         color: Colors.white,
                         fontSize: 26.0,
@@ -53,11 +55,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       onTap: () {
                         print('Profile hit!');
                       },
-                      child: const CircleAvatar(
-                        // foregroundImage: NetworkImage(
-                        //     'https://pbs.twimg.com/profile_images/1139924988595539968/WyLYsuBM_400x400.jpg'),
+                      child: CircleAvatar(
+                        foregroundImage: NetworkImage(box.read('imageUrl')),
                         // backgroundImage: AssetImage('images/gf.png'),
-                        backgroundImage: AssetImage('images/gryffindor.png'),
                         radius: 25,
                         backgroundColor: const Color(0xFF0181A20),
                       ),

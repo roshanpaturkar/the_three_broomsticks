@@ -4,10 +4,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:move_to_background/move_to_background.dart';
 import 'package:the_three_broomsticks/screens/dashboard_screen.dart';
 import 'package:the_three_broomsticks/screens/register_screen.dart';
+import 'package:the_three_broomsticks/support/user_support.dart';
 
 class LoginScreen extends StatefulWidget {
   static const String id = 'login_screen';
@@ -19,6 +21,8 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final box = GetStorage();
+
   bool _isHidden = true;
   bool startBouncer = false;
   bool startForgetPasswordBouncer = false;
@@ -48,12 +52,14 @@ class _LoginScreenState extends State<LoginScreen> {
         await FirebaseAuth.instance.signInWithEmailAndPassword(
             email: email.trim(), password: password.trim());
 
+        await UserSupport.refreshUserDetails();
+
         setState(() {
           startBouncer = false;
         });
 
         ScaffoldMessenger.of(context).showSnackBar(
-          showSnackBar('Happy to see you again!'),
+          showSnackBar('Happy to see you again ${box.read('fName')}!'),
         );
 
         Get.off(const DashboardScreen());
