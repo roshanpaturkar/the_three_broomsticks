@@ -43,7 +43,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
                     Text(
-                      "Hello ${box.read('nickname').toString().split(' ')[0]}",
+                      "Hello ${box.read('nickname').toString().split(' ')[0]}!",
                       style: GoogleFonts.workSans(
                         color: Colors.white,
                         fontSize: 26.0,

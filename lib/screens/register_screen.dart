@@ -171,68 +171,73 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 const SizedBox(
                   height: 50,
                 ),
-                Container(
-                  width: 350,
-                  decoration: BoxDecoration(
-                    color: const Color(0xFF262A34),
-                    borderRadius: BorderRadius.circular(24),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(30, 10, 30, 10),
-                    child: TextField(
-                      controller: fNameFieldController,
-                      cursorColor: Colors.white,
-                      obscureText: false,
-                      keyboardType: TextInputType.name,
-                      decoration: const InputDecoration(
-                        border: InputBorder.none,
-                        hintText: 'First Name',
-                        hintStyle: TextStyle(
-                          color: Color(0xFF6F7075),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      width: 168,
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF262A34),
+                        borderRadius: BorderRadius.circular(24),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(30, 10, 30, 10),
+                        child: TextField(
+                          controller: fNameFieldController,
+                          cursorColor: Colors.white,
+                          obscureText: false,
+                          keyboardType: TextInputType.name,
+                          decoration: const InputDecoration(
+                            border: InputBorder.none,
+                            hintText: 'First Name',
+                            hintStyle: TextStyle(
+                              color: Color(0xFF6F7075),
+                            ),
+                          ),
+                          style: const TextStyle(
+                            color: Color(0xFFD5D6D9),
+                          ),
+                          onChanged: (value) {
+                            fName = value;
+                            print(fName);
+                          },
                         ),
                       ),
-                      style: const TextStyle(
-                        color: Color(0xFFD5D6D9),
-                      ),
-                      onChanged: (value) {
-                        fName = value;
-                        print(fName);
-                      },
                     ),
-                  ),
-                ),
-                const SizedBox(
-                  height: 14,
-                ),
-                Container(
-                  width: 350,
-                  decoration: BoxDecoration(
-                    color: const Color(0xFF262A34),
-                    borderRadius: BorderRadius.circular(24),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(30, 10, 30, 10),
-                    child: TextField(
-                      controller: lNameFieldController,
-                      cursorColor: Colors.white,
-                      obscureText: false,
-                      keyboardType: TextInputType.name,
-                      decoration: const InputDecoration(
-                        border: InputBorder.none,
-                        hintText: 'Last Name',
-                        hintStyle: TextStyle(
-                          color: Color(0xFF6F7075),
+                    const SizedBox(
+                      width: 12,
+                    ),
+                    Container(
+                      width: 168,
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF262A34),
+                        borderRadius: BorderRadius.circular(24),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(30, 10, 30, 10),
+                        child: TextField(
+                          controller: lNameFieldController,
+                          cursorColor: Colors.white,
+                          obscureText: false,
+                          keyboardType: TextInputType.name,
+                          decoration: const InputDecoration(
+                            border: InputBorder.none,
+                            hintText: 'Last Name',
+                            hintStyle: TextStyle(
+                              color: Color(0xFF6F7075),
+                            ),
+                          ),
+                          style: const TextStyle(
+                            color: Color(0xFFD5D6D9),
+                          ),
+                          onChanged: (value) {
+                            lName = value;
+                            print(lName);
+                          },
                         ),
                       ),
-                      style: const TextStyle(
-                        color: Color(0xFFD5D6D9),
-                      ),
-                      onChanged: (value) {
-                        lName = value;
-                        print(lName);
-                      },
                     ),
-                  ),
+                  ],
                 ),
                 const SizedBox(
                   height: 14,
