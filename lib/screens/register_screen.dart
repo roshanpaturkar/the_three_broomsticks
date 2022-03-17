@@ -72,6 +72,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
         var userData = {
           'uid': userCredential.user?.uid,
+          'userAccessControl': 3,
+          'disable': 0,
           'firstName': fName.trim(),
           'lastName': lName.trim(),
           'nickname': nickName.trim(),
@@ -494,6 +496,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                     ],
                   ),
+                ),
+                const SizedBox(
+                  height: 20,
                 ),
               ],
             ),

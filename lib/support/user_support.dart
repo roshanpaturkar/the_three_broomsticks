@@ -7,7 +7,6 @@ class UserSupport {
     final box = GetStorage();
 
     var uid = FirebaseAuth.instance.currentUser!.uid;
-    CollectionReference users = FirebaseFirestore.instance.collection('users');
 
     await FirebaseFirestore.instance
         .collection('users')
@@ -17,6 +16,8 @@ class UserSupport {
           (value) => {
             value.docs.forEach((element) {
               box.write('uid', element.data()['uid']);
+              box.write('userAccessControl', element.get('userAccessControl'));
+              box.write('disable', element.get('disable'));
               box.write('fName', element.get('firstName'));
               box.write('lName', element.get('lastName'));
               box.write('email', element.get('email'));

@@ -1,7 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:the_three_broomsticks/screens/dashboard_screen.dart';
 import 'package:the_three_broomsticks/screens/login_screen.dart';
 
 class StartScreen extends StatefulWidget {
@@ -132,6 +134,11 @@ class _StartScreenState extends State<StartScreen> {
                       TextButton(
                         onPressed: () async {
                           Get.off(const LoginScreen());
+                          if (FirebaseAuth.instance.currentUser != null) {
+                            Get.offAll(const DashboardScreen());
+                          } else {
+                            Get.off(const LoginScreen());
+                          }
                         },
                         child: Text(
                           start,

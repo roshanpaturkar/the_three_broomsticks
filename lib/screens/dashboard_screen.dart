@@ -1,9 +1,11 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:move_to_background/move_to_background.dart';
+import 'package:the_three_broomsticks/screens/profile_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
   static const String id = 'dashboard_screen';
@@ -53,7 +55,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     GestureDetector(
                       onLongPress: () {},
                       onTap: () {
-                        print('Profile hit!');
+                        Get.to(const ProfileScreen());
                       },
                       child: CircleAvatar(
                         foregroundImage: NetworkImage(box.read('imageUrl')),
