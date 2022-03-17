@@ -131,7 +131,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   children: [
                     TextButton(
                       onPressed: () {
-                        print('Change Password hit!');
+                        showSnackBar('Under development!');
+                        print('Under development!');
                         // Navigator.push(
                         //   context,
                         //   MaterialPageRoute(
@@ -199,7 +200,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         // setState(() {
                         //   startDeleteBouncer = true;
                         // });
-                        print('Delete Account HIT!');
+                        print('Under development!');
+                        showSnackBar('Under development!');
                         // createProject(context);
                       },
                       child: const Text(

@@ -6,6 +6,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:move_to_background/move_to_background.dart';
 import 'package:the_three_broomsticks/screens/profile_screen.dart';
+import 'package:the_three_broomsticks/support/background_tasks.dart';
 
 class DashboardScreen extends StatefulWidget {
   static const String id = 'dashboard_screen';
@@ -21,6 +22,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   SnackBar showSnackBar(var message) {
     return SnackBar(content: Text(message));
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    BackgroundTasks run = BackgroundTasks();
+
+    run.backgroundTasks();
   }
 
   @override
