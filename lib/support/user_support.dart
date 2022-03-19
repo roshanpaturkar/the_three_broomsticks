@@ -28,5 +28,31 @@ class UserSupport {
             }),
           },
         );
+    print('User details refreshed!');
+  }
+
+  static Future<void> updateUserDetails(var usedDetails) async {
+    var uid = FirebaseAuth.instance.currentUser!.uid;
+
+    await FirebaseFirestore.instance
+        .collection('users')
+        .where('uid', isEqualTo: uid)
+        .get()
+        .then(
+          (value) => {
+            value.docs.forEach((element) async {
+              CollectionReference users =
+                  FirebaseFirestore.instance.collection('users');
+
+              await users
+                  .doc(element.id)
+                  .update(usedDetails)
+                  .then((value) => print('User details updated!'))
+                  .catchError((error) => print("Failed to add user: $error"));
+            }),
+          },
+        );
+
+    refreshUserDetails();
   }
 }
