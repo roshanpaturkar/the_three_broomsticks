@@ -68,7 +68,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       },
                       child: CircleAvatar(
                         foregroundImage: NetworkImage(box.read('imageUrl')),
-                        // backgroundImage: AssetImage('images/gf.png'),
+                        backgroundImage: AssetImage(
+                            'images/${box.read('house').toLowerCase()}.png'),
                         radius: 25,
                         backgroundColor: const Color(0xFF0181A20),
                       ),

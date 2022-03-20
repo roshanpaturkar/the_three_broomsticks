@@ -96,6 +96,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         });
       }
     } else if (GetPlatform.isWeb) {
+      Support.toast('This feature is unstable in web!');
       FilePickerResult? result = await FilePicker.platform.pickFiles();
 
       if (result != null) {
@@ -107,33 +108,36 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
         Uint8List? file = result.files.first.bytes;
 
-        print(result.files.first.size);
+        if (result.files.first.size < 2000000) {
+          Reference ref = FirebaseStorage.instance.ref(
+              'profileImages/${box.read('uid')}.${result.files.first.extension}');
+          UploadTask task = ref.putData(file!);
 
-        Reference ref = FirebaseStorage.instance.ref(
-            'profileImages/${box.read('uid')}.${result.files.first.extension}');
-        UploadTask task = ref.putData(file!);
+          task.snapshotEvents.listen((event) {
+            setState(() {
+              progress = ((event.bytesTransferred.toDouble() /
+                          event.totalBytes.toDouble()) *
+                      100)
+                  .roundToDouble();
 
-        task.snapshotEvents.listen((event) {
-          setState(() {
-            progress = ((event.bytesTransferred.toDouble() /
-                        event.totalBytes.toDouble()) *
-                    100)
-                .roundToDouble();
-
-            print(progress);
-
-            if (progress == 100) {
-              setState(() {
-                uploading = false;
-              });
-            }
+              if (progress == 100) {
+                setState(() {
+                  uploading = false;
+                });
+              }
+            });
           });
-        });
 
-        var url = await ref.getDownloadURL();
-        box.write('imageUrl', url);
-        var userData = {'imageUrl': url};
-        UserSupport.updateUserDetails(userData);
+          var url = await ref.getDownloadURL();
+          box.write('imageUrl', url);
+          var userData = {'imageUrl': url};
+          UserSupport.updateUserDetails(userData);
+        } else {
+          setState(() {
+            uploading = false;
+          });
+          Support.toast('Size should be less than 2 MB!');
+        }
       } else {
         setState(() {
           uploading = false;
@@ -168,13 +172,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     await uploadProfileImage();
                   },
                   child: uploading
-                      ? Container(
+                      ? SizedBox(
                           height: 84.0,
                           width: 84.0,
                           child: LiquidCircularProgressIndicator(
                             value: progress / 100,
                             valueColor:
-                                AlwaysStoppedAnimation(Colors.blueAccent),
+                                const AlwaysStoppedAnimation(Colors.blueAccent),
                             backgroundColor: Colors.white,
                             direction: Axis.vertical,
                             center: Text(
@@ -186,6 +190,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         )
                       : CircleAvatar(
                           foregroundImage: NetworkImage(box.read('imageUrl')),
+                          backgroundImage: AssetImage(
+                              'images/${box.read('house').toLowerCase()}.png'),
                           radius: 42,
                           backgroundColor: const Color(0xFF0181A20),
                         ),
@@ -246,7 +252,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       TextButton(
                         onPressed: () {
                           showSnackBar('Under development!');
-                          print('Under development!');
+                          Support.toast('Under development!');
                           // Navigator.push(
                           //   context,
                           //   MaterialPageRoute(
@@ -314,7 +320,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           // setState(() {
                           //   startDeleteBouncer = true;
                           // });
-                          print('Under development!');
+                          Support.toast('Under development!');
                           showSnackBar('Under development!');
                           // createProject(context);
                         },
