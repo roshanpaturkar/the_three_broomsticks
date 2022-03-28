@@ -7,6 +7,7 @@ import 'package:the_three_broomsticks/versions/app_versions.dart';
 
 class BackgroundTasks {
   void checkAllowedVersions() {
+    print('Check all allowed version service started!');
     DatabaseReference starCountRef =
         FirebaseDatabase.instance.ref('versionControl/allowedVersions');
     starCountRef.onValue.listen((DatabaseEvent event) {
@@ -23,6 +24,7 @@ class BackgroundTasks {
   }
 
   void checkUpdates() {
+    print('Check updated service started!');
     DatabaseReference starCountRef =
         FirebaseDatabase.instance.ref('versionControl/currentVersion');
     starCountRef.onValue.listen((DatabaseEvent event) {

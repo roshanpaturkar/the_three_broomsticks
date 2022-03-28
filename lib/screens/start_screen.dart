@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:the_three_broomsticks/screens/dashboard_screen.dart';
 import 'package:the_three_broomsticks/screens/login_screen.dart';
+import 'package:the_three_broomsticks/support/user_support.dart';
 
 class StartScreen extends StatefulWidget {
   static const String id = 'start_screen';
@@ -135,6 +136,7 @@ class _StartScreenState extends State<StartScreen> {
                         onPressed: () async {
                           Get.off(const LoginScreen());
                           if (FirebaseAuth.instance.currentUser != null) {
+                            UserSupport.refreshUserDetails();
                             Get.offAll(const DashboardScreen());
                           } else {
                             Get.off(const LoginScreen());

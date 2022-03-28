@@ -62,6 +62,7 @@ class _LoginScreenState extends State<LoginScreen> {
           showSnackBar('Happy to see you again ${box.read('fName')}!'),
         );
 
+        UserSupport.refreshUserDetails();
         Get.off(const DashboardScreen());
       } on FirebaseAuthException catch (e) {
         setState(() {
