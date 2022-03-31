@@ -1,9 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:the_three_broomsticks/support/support.dart';
 
 class GroupMessageInput extends StatefulWidget {
+  GroupMessageInput({Key? key, required this.isCommonRoom}) : super(key: key);
+  bool isCommonRoom;
+
   @override
   _GroupMessageInputState createState() => _GroupMessageInputState();
 }
@@ -15,9 +19,28 @@ class _GroupMessageInputState extends State<GroupMessageInput> {
   Widget build(BuildContext context) {
     final messageFieldController = TextEditingController();
     final fstore = FirebaseFirestore.instance;
+    final dbRef =
+        FirebaseDatabase.instance.ref().child('rooms').child('cafeteria');
     String msg = "";
 
-    void sendMsg() async {
+    void sendMessage() async {
+      if (msg.isNotEmpty) {
+        await dbRef.push().set({
+          "message": msg,
+          "timestamp": DateTime.now().toString(),
+          "uid": box.read('uid'),
+          "nickname": box.read('nickname'),
+          "displayImage": box.read('imageUrl'),
+          "isMessageDeleted": false,
+        });
+
+        msg = "";
+      } else {
+        Support.toast("Please type something to send!");
+      }
+    }
+
+    void sendMessageToCommonRoom() async {
       if (msg.isNotEmpty) {
         await fstore
             .collection(
@@ -104,7 +127,12 @@ class _GroupMessageInputState extends State<GroupMessageInput> {
               color: Colors.white,
               onPressed: () {
                 // checkBlockedUser();
-                sendMsg();
+                if (widget.isCommonRoom) {
+                  sendMessageToCommonRoom();
+                } else {
+                  sendMessage();
+                }
+
                 messageFieldController.clear();
               },
             ),

@@ -1,15 +1,14 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:the_three_broomsticks/support/support.dart';
 
 class MessageTiles extends StatelessWidget {
-  const MessageTiles({
-    Key? key,
-    required this.messages,
-  }) : super(key: key);
+  const MessageTiles(
+      {Key? key, required this.messages, required this.isCommonRoom})
+      : super(key: key);
 
-  final DocumentSnapshot<Object?> messages;
+  final messages;
+  final bool isCommonRoom;
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +44,7 @@ class MessageTiles extends StatelessWidget {
                                           color: Colors.white70)),
                                   const Spacer(),
                                   Text(
-                                    '${Support.getMailHeadDateTime(messages['timestamp'])}',
+                                    '${isCommonRoom ? Support.getMailHeadDateTime(messages['timestamp'])['time'] : Support.getMessageDateAndTime(messages['timestamp'])['time']}',
                                     style:
                                         const TextStyle(color: Colors.white70),
                                   ),
@@ -109,7 +108,7 @@ class MessageTiles extends StatelessWidget {
                                         const TextStyle(color: Colors.black54)),
                                 const Spacer(),
                                 Text(
-                                  '${Support.getMailHeadDateTime(messages['timestamp'])}',
+                                  '${isCommonRoom ? Support.getMailHeadDateTime(messages['timestamp'])['time'] : Support.getMessageDateAndTime(messages['timestamp'])['time']}',
                                   style: const TextStyle(color: Colors.black54),
                                 ),
                               ],

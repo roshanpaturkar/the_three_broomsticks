@@ -1,11 +1,13 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:move_to_background/move_to_background.dart';
+import 'package:the_three_broomsticks/screens/cafeteria_room_screen.dart';
 import 'package:the_three_broomsticks/screens/common_room_screen.dart';
 import 'package:the_three_broomsticks/screens/profile_screen.dart';
 import 'package:the_three_broomsticks/support/background_tasks.dart';
@@ -25,6 +27,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   final _commonRoom =
       FirebaseFirestore.instance.collection('commonRoomChatHeads');
+  final _dbRef =
+      FirebaseDatabase.instance.ref().child('room_heads').child('cafeteria');
 
   SnackBar showSnackBar(var message) {
     return SnackBar(content: Text(message));
@@ -49,6 +53,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
       },
       child: Scaffold(
         backgroundColor: const Color(0xFF0181A20),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            Support.toast('Under dev!');
+            // Get.to(const TestRoomScreen());
+          },
+          backgroundColor: Colors.red,
+          child: const Icon(Icons.group_add_rounded),
+        ),
         body: SafeArea(
           child: Center(
             child: Column(
@@ -84,6 +96,80 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 const SizedBox(
                   height: 16,
                 ),
+                StreamBuilder(
+                  stream: _dbRef.onValue,
+                  builder: (context, AsyncSnapshot snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+                    if (snapshot.hasData) {
+                      final cafeteria = snapshot.data!.snapshot.value;
+
+                      if (cafeteria != null) {
+                        return GestureDetector(
+                          onTap: () {
+                            if (!cafeteria['blockedUsers']
+                                .toString()
+                                .split(',')
+                                .contains(box.read('uid'))) {
+                              Get.to(
+                                const CafeteriaRoomScreen(),
+                                arguments: [
+                                  cafeteria['roomPath'],
+                                  cafeteria['name'],
+                                  cafeteria['icon']
+                                ],
+                              );
+                            } else {
+                              Support.toast('You don\'t have access!');
+                            }
+                          },
+                          child: Container(
+                            width: 390,
+                            padding: const EdgeInsets.fromLTRB(4, 10, 4, 10),
+                            decoration: BoxDecoration(
+                              color: const Color(0xFF262A34),
+                              borderRadius: BorderRadius.circular(24),
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                CircleAvatar(
+                                  foregroundImage:
+                                      NetworkImage('${cafeteria['icon']}'),
+                                  backgroundImage:
+                                      const AssetImage('images/cafeteria.png'),
+                                  radius: 22,
+                                  backgroundColor: const Color(0xFF262A34),
+                                ),
+                                const SizedBox(
+                                  width: 24.0,
+                                ),
+                                Text(
+                                  '${cafeteria['name']} !',
+                                  style: GoogleFonts.dancingScript(
+                                    color: Colors.white,
+                                    fontSize: 26.0,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      } else {
+                        return const Text('Hello');
+                      }
+                    }
+
+                    return const Center(
+                      child: Text('There is something wrong!'),
+                    );
+                  },
+                ),
+                const SizedBox(
+                  height: 16,
+                ),
                 StreamBuilder<QuerySnapshot>(
                   stream: _commonRoom
                       .where('house', isEqualTo: box.read('house'))
@@ -91,11 +177,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   builder: (BuildContext context,
                       AsyncSnapshot<QuerySnapshot> snapshot) {
                     if (snapshot.hasError) {
-                      return Text('Something went wrong');
+                      return const Text('Something went wrong');
                     }
 
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Text("Loading");
+                      return const Text("Loading");
                     }
 
                     String _icon = '';

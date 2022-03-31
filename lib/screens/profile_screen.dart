@@ -56,9 +56,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
         userDetailsChanged = true;
 
-        var extension = image?.name.toString().split('.')[1];
+        var extension = image.name.toString().split('.')[1];
 
-        File file = File(image!.path);
+        File file = File(image.path);
 
         try {
           final ref = FirebaseStorage.instance

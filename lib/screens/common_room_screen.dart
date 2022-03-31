@@ -76,14 +76,15 @@ class _CommonRoomScreenState extends State<CommonRoomScreen> {
                       itemBuilder: (context, index) {
                         DocumentSnapshot messages = snapshot.data!.docs[index];
 
-                        return MessageTiles(messages: messages);
+                        return MessageTiles(
+                            messages: messages, isCommonRoom: true);
                       },
                     );
                   },
                 ),
               ),
             ),
-            GroupMessageInput(),
+            GroupMessageInput(isCommonRoom: true),
           ],
         ),
       ),
