@@ -12,7 +12,9 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  FirebaseDatabase.instance.setPersistenceEnabled(true);
+  if (GetPlatform.isAndroid || GetPlatform.isIOS) {
+    FirebaseDatabase.instance.setPersistenceEnabled(true);
+  }
   await GetStorage.init();
   runApp(const MyApp());
 }
