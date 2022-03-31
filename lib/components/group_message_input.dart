@@ -104,6 +104,16 @@ class _GroupMessageInputState extends State<GroupMessageInput> {
                   padding: const EdgeInsets.symmetric(horizontal: 15),
                   child: TextField(
                     // textInputAction: TextInputAction.go,
+                    onSubmitted: (value) {
+                      msg = value;
+                      if (widget.isCommonRoom) {
+                        sendMessageToCommonRoom();
+                      } else {
+                        sendMessage();
+                      }
+
+                      messageFieldController.clear();
+                    },
                     controller: messageFieldController,
                     onChanged: (val) {
                       msg = val;
