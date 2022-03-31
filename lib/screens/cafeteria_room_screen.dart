@@ -45,56 +45,61 @@ class _CafeteriaRoomScreenState extends State<CafeteriaRoomScreen> {
           ),
         ),
       ),
-      body: Container(
-        height: MediaQuery.of(context).size.height,
-        child: Column(
-          children: [
-            Expanded(
-              child: Container(
-                child: StreamBuilder(
-                  stream: dbRef.onValue,
-                  builder: (context, AsyncSnapshot snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(child: CircularProgressIndicator());
-                    }
-                    if (snapshot.hasData) {
-                      final data = snapshot.data!.snapshot.value;
-
-                      List messageDataKeys = data.keys.toList()..sort();
-                      List messageKeys = messageDataKeys.reversed.toList();
-
-                      if (data != null) {
-                        return ListView.builder(
-                            reverse: true,
-                            physics: const BouncingScrollPhysics(),
-                            itemCount: data.length,
-                            itemBuilder: (context, index) {
-                              return MessageTiles(
-                                messages: data[messageKeys[index]],
-                                isCommonRoom: false,
-                              );
-                            });
-                      } else {
-                        return Center(
-                          child: Text(
-                            'Data Not found!',
-                            style: GoogleFonts.patrickHandSc(
-                              color: Colors.white,
-                              fontSize: 26.0,
-                            ),
-                          ),
-                        );
+      body: Center(
+        child: Container(
+          height: MediaQuery.of(context).size.height,
+          width: GetPlatform.isWeb
+              ? MediaQuery.of(context).size.width * 0.3
+              : MediaQuery.of(context).size.width * 0.9,
+          child: Column(
+            children: [
+              Expanded(
+                child: Container(
+                  child: StreamBuilder(
+                    stream: dbRef.onValue,
+                    builder: (context, AsyncSnapshot snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(child: CircularProgressIndicator());
                       }
-                    }
-                    return const Center(
-                      child: Text('There is something wrong!'),
-                    );
-                  },
+                      if (snapshot.hasData) {
+                        final data = snapshot.data!.snapshot.value;
+
+                        List messageDataKeys = data.keys.toList()..sort();
+                        List messageKeys = messageDataKeys.reversed.toList();
+
+                        if (data != null) {
+                          return ListView.builder(
+                              reverse: true,
+                              physics: const BouncingScrollPhysics(),
+                              itemCount: data.length,
+                              itemBuilder: (context, index) {
+                                return MessageTiles(
+                                  messages: data[messageKeys[index]],
+                                  isCommonRoom: false,
+                                );
+                              });
+                        } else {
+                          return Center(
+                            child: Text(
+                              'Data Not found!',
+                              style: GoogleFonts.patrickHandSc(
+                                color: Colors.white,
+                                fontSize: 26.0,
+                              ),
+                            ),
+                          );
+                        }
+                      }
+                      return const Center(
+                        child: Text('There is something wrong!'),
+                      );
+                    },
+                  ),
                 ),
               ),
-            ),
-            GroupMessageInput(isCommonRoom: false),
-          ],
+              GroupMessageInput(isCommonRoom: false),
+            ],
+          ),
         ),
       ),
     );

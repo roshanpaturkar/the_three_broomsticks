@@ -49,43 +49,49 @@ class _CommonRoomScreenState extends State<CommonRoomScreen> {
           ),
         ),
       ),
-      body: Container(
-        height: MediaQuery.of(context).size.height,
-        child: Column(
-          children: [
-            Expanded(
-              child: Container(
-                child: StreamBuilder<QuerySnapshot>(
-                  stream: fireStore
-                      .collection(Get.arguments[0])
-                      .orderBy('timestamp', descending: true)
-                      .where('isMessageDeleted', isEqualTo: false)
-                      .snapshots(),
-                  builder: (context, snapshot) {
-                    if (snapshot.data == null) {
-                      return const SpinKitDoubleBounce(
-                        color: Colors.white,
-                        size: 30.0,
+      body: Center(
+        child: Container(
+          height: MediaQuery.of(context).size.height,
+          width: GetPlatform.isWeb
+              ? MediaQuery.of(context).size.width * 0.3
+              : MediaQuery.of(context).size.width * 0.8,
+          child: Column(
+            children: [
+              Expanded(
+                child: Container(
+                  child: StreamBuilder<QuerySnapshot>(
+                    stream: fireStore
+                        .collection(Get.arguments[0])
+                        .orderBy('timestamp', descending: true)
+                        .where('isMessageDeleted', isEqualTo: false)
+                        .snapshots(),
+                    builder: (context, snapshot) {
+                      if (snapshot.data == null) {
+                        return const SpinKitDoubleBounce(
+                          color: Colors.white,
+                          size: 30.0,
+                        );
+                      }
+
+                      return ListView.builder(
+                        physics: const BouncingScrollPhysics(),
+                        reverse: true,
+                        itemCount: snapshot.data!.docs.length,
+                        itemBuilder: (context, index) {
+                          DocumentSnapshot messages =
+                              snapshot.data!.docs[index];
+
+                          return MessageTiles(
+                              messages: messages, isCommonRoom: true);
+                        },
                       );
-                    }
-
-                    return ListView.builder(
-                      physics: const BouncingScrollPhysics(),
-                      reverse: true,
-                      itemCount: snapshot.data!.docs.length,
-                      itemBuilder: (context, index) {
-                        DocumentSnapshot messages = snapshot.data!.docs[index];
-
-                        return MessageTiles(
-                            messages: messages, isCommonRoom: true);
-                      },
-                    );
-                  },
+                    },
+                  ),
                 ),
               ),
-            ),
-            GroupMessageInput(isCommonRoom: true),
-          ],
+              GroupMessageInput(isCommonRoom: true),
+            ],
+          ),
         ),
       ),
     );

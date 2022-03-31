@@ -26,7 +26,7 @@ class MessageTiles extends StatelessWidget {
                         padding: const EdgeInsets.only(left: 10, right: 10),
                         alignment: Alignment.topRight,
                         child: Container(
-                          width: MediaQuery.of(context).size.width * 0.80,
+                          width: MediaQuery.of(context).size.width * 0.23,
                           padding: const EdgeInsets.all(10),
                           margin: const EdgeInsets.symmetric(vertical: 10),
                           decoration: BoxDecoration(
@@ -89,7 +89,7 @@ class MessageTiles extends StatelessWidget {
                       padding: const EdgeInsets.only(left: 10, right: 10),
                       alignment: Alignment.topLeft,
                       child: Container(
-                        width: MediaQuery.of(context).size.width * 0.80,
+                        width: MediaQuery.of(context).size.width * 0.23,
                         padding: const EdgeInsets.all(10),
                         margin: const EdgeInsets.symmetric(vertical: 10),
                         decoration: BoxDecoration(

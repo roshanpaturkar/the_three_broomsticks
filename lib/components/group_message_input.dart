@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:the_three_broomsticks/support/support.dart';
 
@@ -94,7 +95,9 @@ class _GroupMessageInputState extends State<GroupMessageInput> {
             borderRadius: BorderRadius.circular(50),
             child: Container(
               height: 50,
-              width: MediaQuery.of(context).size.width * 0.75,
+              width: GetPlatform.isWeb
+                  ? MediaQuery.of(context).size.width * 0.23
+                  : MediaQuery.of(context).size.width * 0.80,
               color: const Color(0xffF2F2F2),
               child: Center(
                 child: Padding(
