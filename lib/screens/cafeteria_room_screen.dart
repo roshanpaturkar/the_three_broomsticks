@@ -64,10 +64,10 @@ class _CafeteriaRoomScreenState extends State<CafeteriaRoomScreen> {
                       if (snapshot.hasData) {
                         final data = snapshot.data!.snapshot.value;
 
-                        List messageDataKeys = data.keys.toList()..sort();
-                        List messageKeys = messageDataKeys.reversed.toList();
-
                         if (data != null) {
+                          List messageDataKeys = data.keys.toList()..sort();
+                          List messageKeys = messageDataKeys.reversed.toList();
+
                           return ListView.builder(
                               reverse: true,
                               physics: const BouncingScrollPhysics(),
@@ -81,7 +81,7 @@ class _CafeteriaRoomScreenState extends State<CafeteriaRoomScreen> {
                         } else {
                           return Center(
                             child: Text(
-                              'Data Not found!',
+                              'Message not found!',
                               style: GoogleFonts.patrickHandSc(
                                 color: Colors.white,
                                 fontSize: 26.0,
