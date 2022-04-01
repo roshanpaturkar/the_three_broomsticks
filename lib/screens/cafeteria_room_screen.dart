@@ -97,7 +97,7 @@ class _CafeteriaRoomScreenState extends State<CafeteriaRoomScreen> {
                   ),
                 ),
               ),
-              GroupMessageInput(isCommonRoom: false),
+              GroupMessageInput(isCommonRoom: false, dbPath: Get.arguments[0]),
             ],
           ),
         ),

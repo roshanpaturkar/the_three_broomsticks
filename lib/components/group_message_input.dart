@@ -6,8 +6,10 @@ import 'package:get_storage/get_storage.dart';
 import 'package:the_three_broomsticks/support/support.dart';
 
 class GroupMessageInput extends StatefulWidget {
-  GroupMessageInput({Key? key, required this.isCommonRoom}) : super(key: key);
+  GroupMessageInput({Key? key, required this.isCommonRoom, this.dbPath})
+      : super(key: key);
   bool isCommonRoom;
+  String? dbPath;
 
   @override
   _GroupMessageInputState createState() => _GroupMessageInputState();
@@ -20,8 +22,10 @@ class _GroupMessageInputState extends State<GroupMessageInput> {
   Widget build(BuildContext context) {
     final messageFieldController = TextEditingController();
     final fstore = FirebaseFirestore.instance;
-    final dbRef =
-        FirebaseDatabase.instance.ref().child('rooms').child('cafeteria');
+    final dbRef = FirebaseDatabase.instance
+        .ref()
+        .child('rooms')
+        .child(widget.dbPath.toString());
     String msg = "";
 
     void sendMessage() async {
