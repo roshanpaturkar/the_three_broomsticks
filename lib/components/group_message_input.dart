@@ -96,8 +96,8 @@ class _GroupMessageInputState extends State<GroupMessageInput> {
             child: Container(
               height: 50,
               width: GetPlatform.isWeb
-                  ? MediaQuery.of(context).size.width * 0.23
-                  : MediaQuery.of(context).size.width * 0.80,
+                  ? MediaQuery.of(context).size.width * 0.3
+                  : MediaQuery.of(context).size.width * 0.7,
               color: const Color(0xffF2F2F2),
               child: Center(
                 child: Padding(

@@ -54,7 +54,7 @@ class _CommonRoomScreenState extends State<CommonRoomScreen> {
           height: MediaQuery.of(context).size.height,
           width: GetPlatform.isWeb
               ? MediaQuery.of(context).size.width * 0.3
-              : MediaQuery.of(context).size.width * 0.8,
+              : MediaQuery.of(context).size.width * 0.9,
           child: Column(
             children: [
               Expanded(

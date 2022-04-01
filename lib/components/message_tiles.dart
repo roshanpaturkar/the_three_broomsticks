@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:the_three_broomsticks/support/support.dart';
 
 class MessageTiles extends StatelessWidget {
@@ -26,7 +27,9 @@ class MessageTiles extends StatelessWidget {
                         padding: const EdgeInsets.only(left: 10, right: 10),
                         alignment: Alignment.topRight,
                         child: Container(
-                          width: MediaQuery.of(context).size.width * 0.23,
+                          width: GetPlatform.isWeb
+                              ? MediaQuery.of(context).size.width * 0.23
+                              : MediaQuery.of(context).size.width * 0.7,
                           padding: const EdgeInsets.all(10),
                           margin: const EdgeInsets.symmetric(vertical: 10),
                           decoration: BoxDecoration(
@@ -89,7 +92,9 @@ class MessageTiles extends StatelessWidget {
                       padding: const EdgeInsets.only(left: 10, right: 10),
                       alignment: Alignment.topLeft,
                       child: Container(
-                        width: MediaQuery.of(context).size.width * 0.23,
+                        width: GetPlatform.isWeb
+                            ? MediaQuery.of(context).size.width * 0.23
+                            : MediaQuery.of(context).size.width * 0.7,
                         padding: const EdgeInsets.all(10),
                         margin: const EdgeInsets.symmetric(vertical: 10),
                         decoration: BoxDecoration(
@@ -113,9 +118,7 @@ class MessageTiles extends StatelessWidget {
                                 ),
                               ],
                             ),
-                            const SizedBox(
-                              height: 10,
-                            ),
+                            const SizedBox(height: 10),
                             Text(
                               '${messages['message']}',
                               style: const TextStyle(
