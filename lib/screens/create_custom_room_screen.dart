@@ -36,6 +36,7 @@ class _CreateChatRoomScreenState extends State<CreateChatRoomScreen> {
         'roomPath': Support.getRandomString(32),
         'users': users,
         'blockedUsers': [],
+        'lastSeen': [box.read('uid')],
         'timestamp': timestamp,
         'lastMessage': timestamp,
         'lastDetailUpdate': timestamp,

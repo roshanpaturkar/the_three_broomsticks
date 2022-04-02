@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
@@ -28,8 +27,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
   final box = GetStorage();
 
   final firestore = FirebaseFirestore.instance;
-  final _dbRef =
-      FirebaseDatabase.instance.ref().child('room_heads').child('cafeteria');
 
   SnackBar showSnackBar(var message) {
     return SnackBar(content: Text(message));
@@ -116,6 +113,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     List _blockedUsers = [];
                     bool _adminOnly = false;
                     String _docId = '';
+                    List _lastSeen = [];
 
                     for (var element in snapshot.data!.docs) {
                       _name = element.get('name');
@@ -123,6 +121,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       _blockedUsers = element.get('blockedUsers');
                       _adminOnly = element.get('adminOnly');
                       _docId = element.id;
+                      _lastSeen = element.get('lastSeen');
                     }
 
                     return GestureDetector(
@@ -164,7 +163,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                   Text(
                                     '$_name !',
                                     style: GoogleFonts.dancingScript(
-                                      color: Colors.white,
+                                      color: _lastSeen.contains(box.read('uid'))
+                                          ? Colors.white
+                                          : Colors.red,
                                       fontSize: 26.0,
                                     ),
                                   ),
@@ -208,6 +209,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     bool _adminOnly = false;
                     String _groupId = '';
                     String _docId = '';
+                    List _lastSeen = [];
 
                     for (var element in snapshot.data!.docs) {
                       _name = element.get('name');
@@ -217,6 +219,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       _adminOnly = element.get('adminOnly');
                       _groupId = element.get('groupId');
                       _docId = element.id;
+                      _lastSeen = element.get('lastSeen');
                     }
 
                     return GestureDetector(
@@ -262,7 +265,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                   Text(
                                     '$_name !',
                                     style: GoogleFonts.dancingScript(
-                                      color: Colors.white,
+                                      color: _lastSeen.contains(box.read('uid'))
+                                          ? Colors.white
+                                          : Colors.red,
                                       fontSize: 26.0,
                                     ),
                                   ),
@@ -320,8 +325,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                   const EdgeInsets.symmetric(vertical: 8.0),
                               child: GestureDetector(
                                 onTap: () {
-                                  Support.toast(head['name']);
-
                                   if (head['users'].contains(box.read('uid'))) {
                                     if (head['blockedUsers']
                                         .contains(box.read('uid'))) {
@@ -370,7 +373,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                       Text(
                                         '${head['name']} !',
                                         style: GoogleFonts.dancingScript(
-                                          color: Colors.white,
+                                          color: head['lastSeen']
+                                                  .contains(box.read('uid'))
+                                              ? Colors.white
+                                              : Colors.red,
                                           fontSize: 26.0,
                                         ),
                                       ),

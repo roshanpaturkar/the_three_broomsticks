@@ -43,6 +43,7 @@ class _GroupMessageInputState extends State<GroupMessageInput> {
 
         fstore.collection('customRoomHead').doc(widget.headId).update({
           'lastMessage': Timestamp.now(),
+          'lastSeen': [],
         });
 
         msg = "";
@@ -70,9 +71,10 @@ class _GroupMessageInputState extends State<GroupMessageInput> {
 
         fstore
             .collection('commonRoomChatHeads')
-            .doc(box.read('house').toString().toLowerCase())
+            .doc(box.read('house').toLowerCase())
             .update({
           'lastMessage': Timestamp.now(),
+          'lastSeen': [],
         }).catchError((error) {
           print(error);
         });
