@@ -6,10 +6,12 @@ import 'package:get_storage/get_storage.dart';
 import 'package:the_three_broomsticks/support/support.dart';
 
 class GroupMessageInput extends StatefulWidget {
-  GroupMessageInput({Key? key, required this.isCommonRoom, this.dbPath})
+  GroupMessageInput(
+      {Key? key, required this.isCommonRoom, this.dbPath, this.headId})
       : super(key: key);
   bool isCommonRoom;
   String? dbPath;
+  String? headId;
 
   @override
   _GroupMessageInputState createState() => _GroupMessageInputState();
@@ -28,7 +30,7 @@ class _GroupMessageInputState extends State<GroupMessageInput> {
         .child(widget.dbPath.toString());
     String msg = "";
 
-    void sendMessage() async {
+    void sendToCustomMessage() async {
       if (msg.isNotEmpty) {
         await dbRef.push().set({
           "message": msg,
@@ -37,6 +39,10 @@ class _GroupMessageInputState extends State<GroupMessageInput> {
           "nickname": box.read('nickname'),
           "displayImage": box.read('imageUrl'),
           "isMessageDeleted": false,
+        });
+
+        fstore.collection('customRoomHead').doc(widget.headId).update({
+          'lastMessage': Timestamp.now(),
         });
 
         msg = "";
@@ -62,10 +68,14 @@ class _GroupMessageInputState extends State<GroupMessageInput> {
 
         msg = "";
 
-        // await fstore
-        //     .collection("group_head")
-        //     .doc("group_info")
-        //     .update({"timestamp": Timestamp.now()});
+        fstore
+            .collection('commonRoomChatHeads')
+            .doc(box.read('house').toString().toLowerCase())
+            .update({
+          'lastMessage': Timestamp.now(),
+        }).catchError((error) {
+          print(error);
+        });
       } else {
         Support.toast("Please type something to send!");
       }
@@ -113,7 +123,7 @@ class _GroupMessageInputState extends State<GroupMessageInput> {
                       if (widget.isCommonRoom) {
                         sendMessageToCommonRoom();
                       } else {
-                        sendMessage();
+                        sendToCustomMessage();
                       }
 
                       messageFieldController.clear();
@@ -147,7 +157,7 @@ class _GroupMessageInputState extends State<GroupMessageInput> {
                 if (widget.isCommonRoom) {
                   sendMessageToCommonRoom();
                 } else {
-                  sendMessage();
+                  sendToCustomMessage();
                 }
 
                 messageFieldController.clear();

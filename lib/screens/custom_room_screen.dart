@@ -5,16 +5,15 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:the_three_broomsticks/components/group_message_input.dart';
 import 'package:the_three_broomsticks/components/message_tiles.dart';
 
-class CafeteriaRoomScreen extends StatefulWidget {
-  const CafeteriaRoomScreen({Key? key}) : super(key: key);
+class CustomRoomScreen extends StatefulWidget {
+  const CustomRoomScreen({Key? key}) : super(key: key);
 
   @override
-  State<CafeteriaRoomScreen> createState() => _CafeteriaRoomScreenState();
+  State<CustomRoomScreen> createState() => _CustomRoomScreenState();
 }
 
-class _CafeteriaRoomScreenState extends State<CafeteriaRoomScreen> {
-  final dbRef =
-      FirebaseDatabase.instance.ref().child('rooms').child('cafeteria');
+class _CustomRoomScreenState extends State<CustomRoomScreen> {
+  final dbRef = FirebaseDatabase.instance.ref();
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +55,8 @@ class _CafeteriaRoomScreenState extends State<CafeteriaRoomScreen> {
               Expanded(
                 child: Container(
                   child: StreamBuilder(
-                    stream: dbRef.onValue,
+                    stream:
+                        dbRef.child('rooms').child(Get.arguments[0]).onValue,
                     builder: (context, AsyncSnapshot snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return const Center(child: CircularProgressIndicator());
@@ -97,7 +97,10 @@ class _CafeteriaRoomScreenState extends State<CafeteriaRoomScreen> {
                   ),
                 ),
               ),
-              GroupMessageInput(isCommonRoom: false, dbPath: Get.arguments[0]),
+              GroupMessageInput(
+                  isCommonRoom: false,
+                  dbPath: Get.arguments[0],
+                  headId: Get.arguments[3]!),
             ],
           ),
         ),

@@ -33,7 +33,7 @@ class _CreateChatRoomScreenState extends State<CreateChatRoomScreen> {
         'icon': kHouseImagesMap[box.read('house')],
         'adminOnly': false,
         'isDeleted': false,
-        'roomPath': Support.getRandomString(21),
+        'roomPath': Support.getRandomString(32),
         'users': users,
         'blockedUsers': [],
         'timestamp': timestamp,

@@ -8,9 +8,9 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:move_to_background/move_to_background.dart';
-import 'package:the_three_broomsticks/screens/cafeteria_room_screen.dart';
 import 'package:the_three_broomsticks/screens/common_room_screen.dart';
-import 'package:the_three_broomsticks/screens/create_chat_room_screen.dart';
+import 'package:the_three_broomsticks/screens/create_custom_room_screen.dart';
+import 'package:the_three_broomsticks/screens/custom_room_screen.dart';
 import 'package:the_three_broomsticks/screens/profile_screen.dart';
 import 'package:the_three_broomsticks/support/background_tasks.dart';
 import 'package:the_three_broomsticks/support/support.dart';
@@ -96,74 +96,90 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 const SizedBox(
                   height: 16,
                 ),
-                StreamBuilder(
-                  stream: _dbRef.onValue,
-                  builder: (context, AsyncSnapshot snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(child: CircularProgressIndicator());
+                StreamBuilder<QuerySnapshot>(
+                  stream: firestore
+                      .collection('customRoomHead')
+                      .where('roomPath', isEqualTo: 'cafeteria')
+                      .snapshots(),
+                  builder: (BuildContext context,
+                      AsyncSnapshot<QuerySnapshot> snapshot) {
+                    if (snapshot.hasError) {
+                      return const Text('Something went wrong');
                     }
-                    if (snapshot.hasData) {
-                      final cafeteria = snapshot.data!.snapshot.value;
 
-                      if (cafeteria != null) {
-                        return GestureDetector(
-                          onTap: () {
-                            if (!cafeteria['blockedUsers']
-                                .toString()
-                                .split(',')
-                                .contains(box.read('uid'))) {
-                              Get.to(
-                                const CafeteriaRoomScreen(),
-                                arguments: [
-                                  cafeteria['roomPath'],
-                                  cafeteria['name'],
-                                  cafeteria['icon']
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Text("Loading");
+                    }
+
+                    String _icon = '';
+                    String _name = '';
+                    List _blockedUsers = [];
+                    bool _adminOnly = false;
+                    String _docId = '';
+
+                    for (var element in snapshot.data!.docs) {
+                      _name = element.get('name');
+                      _icon = element.get('icon');
+                      _blockedUsers = element.get('blockedUsers');
+                      _adminOnly = element.get('adminOnly');
+                      _docId = element.id;
+                    }
+
+                    return GestureDetector(
+                      onTap: () {
+                        if (_name.isNotEmpty) {
+                          if (_blockedUsers.contains(box.read('uid'))) {
+                            Support.toast('Your blocked to access this room!');
+                          } else {
+                            Get.to(const CustomRoomScreen(),
+                                arguments: ['cafeteria', _name, _icon, _docId]);
+                          }
+                        } else {
+                          Support.toast('You don\'t access to this room!');
+                        }
+                      },
+                      child: Container(
+                        width: 390,
+                        padding: const EdgeInsets.fromLTRB(4, 10, 4, 10),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFF262A34),
+                          borderRadius: BorderRadius.circular(24),
+                        ),
+                        child: _name.isNotEmpty
+                            ? Row(
+                                mainAxisSize: MainAxisSize.min,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  CircleAvatar(
+                                    foregroundImage:
+                                        NetworkImage(_icon.toString()),
+                                    backgroundImage: const AssetImage(
+                                        'images/cafeteria.png'),
+                                    radius: 22,
+                                    backgroundColor: const Color(0xFF262A34),
+                                  ),
+                                  const SizedBox(
+                                    width: 24.0,
+                                  ),
+                                  Text(
+                                    '$_name !',
+                                    style: GoogleFonts.dancingScript(
+                                      color: Colors.white,
+                                      fontSize: 26.0,
+                                    ),
+                                  ),
                                 ],
-                              );
-                            } else {
-                              Support.toast('You don\'t have access!');
-                            }
-                          },
-                          child: Container(
-                            width: 390,
-                            padding: const EdgeInsets.fromLTRB(4, 10, 4, 10),
-                            decoration: BoxDecoration(
-                              color: const Color(0xFF262A34),
-                              borderRadius: BorderRadius.circular(24),
-                            ),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                CircleAvatar(
-                                  foregroundImage:
-                                      NetworkImage('${cafeteria['icon']}'),
-                                  backgroundImage:
-                                      const AssetImage('images/cafeteria.png'),
-                                  radius: 22,
-                                  backgroundColor: const Color(0xFF262A34),
-                                ),
-                                const SizedBox(
-                                  width: 24.0,
-                                ),
-                                Text(
-                                  '${cafeteria['name']} !',
+                              )
+                            : Center(
+                                child: Text(
+                                  'Common Room Not Found !',
                                   style: GoogleFonts.dancingScript(
                                     color: Colors.white,
                                     fontSize: 26.0,
                                   ),
                                 ),
-                              ],
-                            ),
-                          ),
-                        );
-                      } else {
-                        return const Text('Hello');
-                      }
-                    }
-
-                    return const Center(
-                      child: Text('There is something wrong!'),
+                              ),
+                      ),
                     );
                   },
                 ),
@@ -191,6 +207,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     List _blockedUsers = [];
                     bool _adminOnly = false;
                     String _groupId = '';
+                    String _docId = '';
 
                     for (var element in snapshot.data!.docs) {
                       _name = element.get('name');
@@ -199,6 +216,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       _blockedUsers = element.get('blockedUsers');
                       _adminOnly = element.get('adminOnly');
                       _groupId = element.get('groupId');
+                      _docId = element.id;
                     }
 
                     return GestureDetector(
@@ -210,7 +228,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                   'Your blocked to access this room!');
                             } else {
                               Get.to(const CommonRoomScreen(),
-                                  arguments: [_groupId, _name, _icon]);
+                                  arguments: [_groupId, _name, _icon, _docId]);
                             }
                           } else {
                             Support.toast('You don\'t access to this room!');
@@ -303,21 +321,27 @@ class _DashboardScreenState extends State<DashboardScreen> {
                               child: GestureDetector(
                                 onTap: () {
                                   Support.toast(head['name']);
-                                  // if (_name.isNotEmpty) {
-                                  //   if (_users.contains(box.read('uid'))) {
-                                  //     if (_blockedUsers.contains(box.read('uid'))) {
-                                  //       Support.toast(
-                                  //           'Your blocked to access this room!');
-                                  //     } else {
-                                  //       Get.to(const CommonRoomScreen(),
-                                  //           arguments: [_groupId, _name, _icon]);
-                                  //     }
-                                  //   } else {
-                                  //     Support.toast('You don\'t access to this room!');
-                                  //   }
-                                  // } else {
-                                  //   Support.toast('Common Room Not Found !');
-                                  // }
+
+                                  if (head['users'].contains(box.read('uid'))) {
+                                    if (head['blockedUsers']
+                                        .contains(box.read('uid'))) {
+                                      Support.toast(
+                                          'Your blocked to access this room!');
+                                    } else {
+                                      Get.to(
+                                        const CustomRoomScreen(),
+                                        arguments: [
+                                          head['roomPath'],
+                                          head['name'],
+                                          head['icon'],
+                                          head.id
+                                        ],
+                                      );
+                                    }
+                                  } else {
+                                    Support.toast(
+                                        'You don\'t access to this room!');
+                                  }
                                 },
                                 child: Container(
                                   width: 390,
