@@ -108,33 +108,22 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       return const Text("Loading");
                     }
 
-                    String _icon = '';
-                    String _name = '';
-                    List _blockedUsers = [];
-                    bool _adminOnly = false;
-                    String _docId = '';
-                    List _lastSeen = [];
+                    var roomData;
+                    String docID = '';
 
                     for (var element in snapshot.data!.docs) {
-                      _name = element.get('name');
-                      _icon = element.get('icon');
-                      _blockedUsers = element.get('blockedUsers');
-                      _adminOnly = element.get('adminOnly');
-                      _docId = element.id;
-                      _lastSeen = element.get('lastSeen');
+                      roomData = element.data();
+                      docID = element.id;
                     }
 
                     return GestureDetector(
                       onTap: () {
-                        if (_name.isNotEmpty) {
-                          if (_blockedUsers.contains(box.read('uid'))) {
-                            Support.toast('Your blocked to access this room!');
-                          } else {
-                            Get.to(const CustomRoomScreen(),
-                                arguments: ['cafeteria', _name, _icon, _docId]);
-                          }
+                        if (roomData['blockedUsers']
+                            .contains(box.read('uid'))) {
+                          Support.toast('Your blocked to access this room!');
                         } else {
-                          Support.toast('You don\'t access to this room!');
+                          Get.to(const CustomRoomScreen(),
+                              arguments: [roomData, docID]);
                         }
                       },
                       child: Container(
@@ -144,42 +133,33 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           color: const Color(0xFF262A34),
                           borderRadius: BorderRadius.circular(24),
                         ),
-                        child: _name.isNotEmpty
-                            ? Row(
-                                mainAxisSize: MainAxisSize.min,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  CircleAvatar(
-                                    foregroundImage:
-                                        NetworkImage(_icon.toString()),
-                                    backgroundImage: const AssetImage(
-                                        'images/cafeteria.png'),
-                                    radius: 22,
-                                    backgroundColor: const Color(0xFF262A34),
-                                  ),
-                                  const SizedBox(
-                                    width: 24.0,
-                                  ),
-                                  Text(
-                                    '$_name !',
-                                    style: GoogleFonts.dancingScript(
-                                      color: _lastSeen.contains(box.read('uid'))
-                                          ? Colors.white
-                                          : Colors.red,
-                                      fontSize: 26.0,
-                                    ),
-                                  ),
-                                ],
-                              )
-                            : Center(
-                                child: Text(
-                                  'Common Room Not Found !',
-                                  style: GoogleFonts.dancingScript(
-                                    color: Colors.white,
-                                    fontSize: 26.0,
-                                  ),
-                                ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            CircleAvatar(
+                              foregroundImage:
+                                  NetworkImage(roomData['icon'].toString()),
+                              backgroundImage:
+                                  const AssetImage('images/cafeteria.png'),
+                              radius: 22,
+                              backgroundColor: const Color(0xFF262A34),
+                            ),
+                            const SizedBox(
+                              width: 24.0,
+                            ),
+                            Text(
+                              '${roomData['name']} !',
+                              style: GoogleFonts.dancingScript(
+                                color: roomData['lastSeen']
+                                        .contains(box.read('uid'))
+                                    ? Colors.white
+                                    : Colors.red,
+                                fontSize: 26.0,
                               ),
+                            ),
+                          ],
+                        ),
                       ),
                     );
                   },
@@ -202,87 +182,61 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       return const Text("Loading");
                     }
 
-                    String _icon = '';
-                    String _name = '';
-                    List _users = [];
-                    List _blockedUsers = [];
-                    bool _adminOnly = false;
-                    String _groupId = '';
-                    String _docId = '';
-                    List _lastSeen = [];
+                    var roomData;
+                    String docID = '';
 
                     for (var element in snapshot.data!.docs) {
-                      _name = element.get('name');
-                      _icon = element.get('icon');
-                      _users = element.get('users');
-                      _blockedUsers = element.get('blockedUsers');
-                      _adminOnly = element.get('adminOnly');
-                      _groupId = element.get('groupId');
-                      _docId = element.id;
-                      _lastSeen = element.get('lastSeen');
+                      roomData = element.data();
+                      docID = element.id;
                     }
 
                     return GestureDetector(
                       onTap: () {
-                        if (_name.isNotEmpty) {
-                          if (_users.contains(box.read('uid'))) {
-                            if (_blockedUsers.contains(box.read('uid'))) {
-                              Support.toast(
-                                  'Your blocked to access this room!');
-                            } else {
-                              Get.to(const CommonRoomScreen(),
-                                  arguments: [_groupId, _name, _icon, _docId]);
-                            }
+                        if (roomData['users'].contains(box.read('uid'))) {
+                          if (roomData['blockedUsers']
+                              .contains(box.read('uid'))) {
+                            Support.toast('Your blocked to access this room!');
                           } else {
-                            Support.toast('You don\'t access to this room!');
+                            Get.to(const CommonRoomScreen(),
+                                arguments: [roomData, docID]);
                           }
                         } else {
-                          Support.toast('Common Room Not Found !');
+                          Support.toast('You don\'t access to this room!');
                         }
                       },
                       child: Container(
-                        width: 390,
-                        padding: const EdgeInsets.fromLTRB(30, 10, 30, 10),
-                        decoration: BoxDecoration(
-                          color: const Color(0xFF262A34),
-                          borderRadius: BorderRadius.circular(24),
-                        ),
-                        child: _name.isNotEmpty
-                            ? Row(
-                                mainAxisSize: MainAxisSize.min,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  CircleAvatar(
-                                    foregroundImage: NetworkImage(_icon),
-                                    backgroundImage: AssetImage(
-                                        'images/${box.read('house').toLowerCase()}.png'),
-                                    radius: 22,
-                                    backgroundColor: const Color(0xFF262A34),
-                                  ),
-                                  const SizedBox(
-                                    width: 24.0,
-                                  ),
-                                  Text(
-                                    '$_name !',
-                                    style: GoogleFonts.dancingScript(
-                                      color: _lastSeen.contains(box.read('uid'))
-                                          ? Colors.white
-                                          : Colors.red,
-                                      fontSize: 26.0,
-                                    ),
-                                  ),
-                                ],
-                              )
-                            : Center(
-                                child: Text(
-                                  'Common Room Not Found !',
-                                  style: GoogleFonts.dancingScript(
-                                    color: Colors.white,
-                                    fontSize: 26.0,
-                                  ),
+                          width: 390,
+                          padding: const EdgeInsets.fromLTRB(30, 10, 30, 10),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFF262A34),
+                            borderRadius: BorderRadius.circular(24),
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              CircleAvatar(
+                                foregroundImage: NetworkImage(roomData['icon']),
+                                backgroundImage: AssetImage(
+                                    'images/${box.read('house').toLowerCase()}.png'),
+                                radius: 22,
+                                backgroundColor: const Color(0xFF262A34),
+                              ),
+                              const SizedBox(
+                                width: 24.0,
+                              ),
+                              Text(
+                                '${roomData['name']} !',
+                                style: GoogleFonts.dancingScript(
+                                  color: roomData['lastSeen']
+                                          .contains(box.read('uid'))
+                                      ? Colors.white
+                                      : Colors.red,
+                                  fontSize: 26.0,
                                 ),
                               ),
-                      ),
+                            ],
+                          )),
                     );
                   },
                 ),
@@ -333,12 +287,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                     } else {
                                       Get.to(
                                         const CustomRoomScreen(),
-                                        arguments: [
-                                          head['roomPath'],
-                                          head['name'],
-                                          head['icon'],
-                                          head.id
-                                        ],
+                                        arguments: [head, head.id],
                                       );
                                     }
                                   } else {

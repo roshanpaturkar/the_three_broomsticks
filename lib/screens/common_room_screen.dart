@@ -25,7 +25,7 @@ class _CommonRoomScreenState extends State<CommonRoomScreen> {
     super.initState();
 
     ChatRoomSupport support = ChatRoomSupport();
-    support.updateLastSeen(Get.arguments[3], true);
+    support.updateLastSeen(Get.arguments[1], true);
   }
 
   @override
@@ -33,7 +33,7 @@ class _CommonRoomScreenState extends State<CommonRoomScreen> {
     return WillPopScope(
       onWillPop: () async {
         ChatRoomSupport support = ChatRoomSupport();
-        support.updateLastSeen(Get.arguments[3], true);
+        support.updateLastSeen(Get.arguments[1], true);
         return true;
       },
       child: Scaffold(
@@ -41,26 +41,31 @@ class _CommonRoomScreenState extends State<CommonRoomScreen> {
         appBar: AppBar(
           elevation: 0,
           backgroundColor: const Color(0xFF0181A20),
-          title: SizedBox(
-            width: 380,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                CircleAvatar(
-                  foregroundImage: NetworkImage(Get.arguments[2]),
-                  backgroundImage: AssetImage(
-                      'images/${box.read('house').toLowerCase()}.png'),
-                  radius: 16,
-                  backgroundColor: const Color(0xFF262A34),
-                ),
-                Text(
-                  '${Get.arguments[1]} !',
-                  style: GoogleFonts.dancingScript(
-                    color: Colors.white,
-                    fontSize: 22.0,
+          title: GestureDetector(
+            onTap: () {
+              print('Daba diya re!');
+            },
+            child: SizedBox(
+              width: 380,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  CircleAvatar(
+                    foregroundImage: NetworkImage(Get.arguments[0]['icon']),
+                    backgroundImage: AssetImage(
+                        'images/${box.read('house').toLowerCase()}.png'),
+                    radius: 16,
+                    backgroundColor: const Color(0xFF262A34),
                   ),
-                ),
-              ],
+                  Text(
+                    '${Get.arguments[0]['name']} !',
+                    style: GoogleFonts.dancingScript(
+                      color: Colors.white,
+                      fontSize: 22.0,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
@@ -76,7 +81,7 @@ class _CommonRoomScreenState extends State<CommonRoomScreen> {
                   child: Container(
                     child: StreamBuilder<QuerySnapshot>(
                       stream: fireStore
-                          .collection(Get.arguments[0])
+                          .collection(Get.arguments[0]['groupId'])
                           .orderBy('timestamp', descending: true)
                           .where('isMessageDeleted', isEqualTo: false)
                           .snapshots(),
