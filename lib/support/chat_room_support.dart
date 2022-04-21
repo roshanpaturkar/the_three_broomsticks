@@ -13,4 +13,13 @@ class ChatRoomSupport {
       'lastSeen': FieldValue.arrayUnion([box.read('uid')])
     }).catchError((error) => print(error));
   }
+
+  void updateCustomRoomDetails(
+      var roomDetails, String headId, bool isCommonRoom) async {
+    await firestore
+        .collection(isCommonRoom ? 'commonRoomChatHeads' : 'customRoomHead')
+        .doc(headId)
+        .update(roomDetails)
+        .catchError((error) => print(error));
+  }
 }

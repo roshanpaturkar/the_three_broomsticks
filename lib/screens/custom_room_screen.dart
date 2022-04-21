@@ -1,11 +1,13 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:the_three_broomsticks/components/group_message_input.dart';
 import 'package:the_three_broomsticks/components/message_tiles.dart';
 import 'package:the_three_broomsticks/screens/common_room_info_screen.dart';
 import 'package:the_three_broomsticks/support/chat_room_support.dart';
+import 'package:the_three_broomsticks/support/support.dart';
 
 class CustomRoomScreen extends StatefulWidget {
   const CustomRoomScreen({Key? key}) : super(key: key);
@@ -16,6 +18,7 @@ class CustomRoomScreen extends StatefulWidget {
 
 class _CustomRoomScreenState extends State<CustomRoomScreen> {
   final dbRef = FirebaseDatabase.instance.ref();
+  final box = GetStorage();
 
   @override
   void initState() {
@@ -40,7 +43,11 @@ class _CustomRoomScreenState extends State<CustomRoomScreen> {
           backgroundColor: const Color(0xFF0181A20),
           title: GestureDetector(
             onTap: () {
-              Get.to(const CommonRoomInfoScreen(), arguments: Get.arguments);
+              if (Get.arguments[0]['createdBy']['uid'] == box.read('uid')) {
+                Get.to(const CommonRoomInfoScreen(), arguments: Get.arguments);
+              } else {
+                Support.toast('Your not the admin of the room!');
+              }
             },
             child: SizedBox(
               width: 380,

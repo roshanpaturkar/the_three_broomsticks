@@ -162,6 +162,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
       },
       child: Scaffold(
         backgroundColor: const Color(0xFF0181A20),
+        appBar: AppBar(
+          elevation: 0,
+          backgroundColor: const Color(0xFF0181A20),
+          title: SizedBox(
+            width: 380,
+            child: Text(
+              'User Profile',
+              style: GoogleFonts.dancingScript(
+                color: Colors.white,
+                fontSize: 22.0,
+              ),
+            ),
+          ),
+        ),
         body: SafeArea(
           child: Center(
             child: Column(
