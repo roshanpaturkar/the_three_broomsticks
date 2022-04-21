@@ -201,7 +201,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           ),
                           onChanged: (value) {
                             fName = value;
-                            print(fName);
                           },
                         ),
                       ),
@@ -234,7 +233,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           ),
                           onChanged: (value) {
                             lName = value;
-                            print(lName);
                           },
                         ),
                       ),
@@ -269,7 +267,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                       onChanged: (value) {
                         nickName = value;
-                        print(nickName);
                       },
                     ),
                   ),
@@ -308,7 +305,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           onChanged: (String? newValue) {
                             setState(() {
                               house = newValue!;
-                              print(house);
                             });
                           },
                           items: <String>[
@@ -355,7 +351,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                       onChanged: (value) {
                         email = value;
-                        print(email);
                       },
                     ),
                   ),
@@ -388,7 +383,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                       onChanged: (value) {
                         mobile = value;
-                        print(mobile);
                       },
                     ),
                   ),
@@ -430,7 +424,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                       onChanged: (value) {
                         password = value;
-                        print(password);
                       },
                     ),
                   ),

@@ -197,7 +197,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         onChanged: (value) {
                           email = value;
-                          print(email);
                         },
                       ),
                     ),
@@ -243,7 +242,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         onChanged: (value) {
                           password = value;
-                          print(password);
                         },
                       ),
                     ),
