@@ -37,7 +37,9 @@ class _GroupMessageInputState extends State<GroupMessageInput> {
         .child(widget.dbPath.toString());
     String msg = "";
 
-    var audience = widget.roomInfo['users'].toList();
+    var audience = widget.roomInfo['roomPath'] == 'cafeteria'
+        ? widget.roomInfo['audience'].toList()
+        : widget.roomInfo['users'].toList();
     audience.removeWhere((item) => item == box.read('uid'));
 
     void sendToCustomMessage() async {
