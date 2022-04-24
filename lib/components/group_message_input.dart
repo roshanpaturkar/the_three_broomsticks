@@ -3,15 +3,21 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:the_three_broomsticks/support/notification_support.dart';
 import 'package:the_three_broomsticks/support/support.dart';
 
 class GroupMessageInput extends StatefulWidget {
   GroupMessageInput(
-      {Key? key, required this.isCommonRoom, this.dbPath, this.headId})
+      {Key? key,
+      required this.isCommonRoom,
+      this.dbPath,
+      this.headId,
+      this.roomInfo})
       : super(key: key);
   bool isCommonRoom;
   String? dbPath;
   String? headId;
+  var roomInfo;
 
   @override
   _GroupMessageInputState createState() => _GroupMessageInputState();
@@ -22,6 +28,7 @@ class _GroupMessageInputState extends State<GroupMessageInput> {
 
   @override
   Widget build(BuildContext context) {
+    final NotificationSupport notification = NotificationSupport();
     final messageFieldController = TextEditingController();
     final fstore = FirebaseFirestore.instance;
     final dbRef = FirebaseDatabase.instance
@@ -30,8 +37,21 @@ class _GroupMessageInputState extends State<GroupMessageInput> {
         .child(widget.dbPath.toString());
     String msg = "";
 
+    var audience = widget.roomInfo['users'].toList();
+    audience.removeWhere((item) => item == box.read('uid'));
+
     void sendToCustomMessage() async {
       if (msg.isNotEmpty) {
+        var data = {
+          'u_ids': audience,
+          'notification': {
+            'title': widget.roomInfo['name'],
+            'body': '${box.read('nickname')}: $msg',
+            'image': widget.roomInfo['icon']
+          }
+        };
+        notification.sendNotification(data);
+
         await dbRef.push().set({
           "message": msg,
           "timestamp": DateTime.now().toString(),
@@ -54,6 +74,16 @@ class _GroupMessageInputState extends State<GroupMessageInput> {
 
     void sendMessageToCommonRoom() async {
       if (msg.isNotEmpty) {
+        var data = {
+          'u_ids': audience,
+          'notification': {
+            'title': widget.roomInfo['name'],
+            'body': '${box.read('nickname')}: $msg',
+            'image': widget.roomInfo['icon']
+          }
+        };
+        notification.sendNotification(data);
+
         await fstore
             .collection(
                 "${box.read('house').toString().toLowerCase()}CommonRoom")

@@ -109,7 +109,10 @@ class _CommonRoomScreenState extends State<CommonRoomScreen> {
                     ),
                   ),
                 ),
-                GroupMessageInput(isCommonRoom: true),
+                GroupMessageInput(
+                  isCommonRoom: true,
+                  roomInfo: Get.arguments[0],
+                ),
               ],
             ),
           ),
