@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.roshanpaturkar.d3broomsticks.the_three_broomsticks">
    <application
-        android:label="the_three_broomsticks"
+        android:label="D3Broomsticks"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

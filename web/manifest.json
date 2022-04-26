@@ -1,6 +1,6 @@
 {
-    "name": "the_three_broomsticks",
-    "short_name": "the_three_broomsticks",
+    "name": "D3Broomsticks",
+    "short_name": "D3Broomsticks",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
