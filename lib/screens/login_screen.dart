@@ -217,6 +217,9 @@ class _LoginScreenState extends State<LoginScreen> {
                         cursorColor: Colors.white,
                         obscureText: _isHidden,
                         keyboardType: TextInputType.visiblePassword,
+                        onSubmitted: (value) {
+                          signInWithEmailAndPassword(context);
+                        },
                         decoration: InputDecoration(
                           // icon: Icon(
                           //   Icons.vpn_key_outlined,

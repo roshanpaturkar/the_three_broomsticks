@@ -151,7 +151,7 @@ class _GroupMessageInputState extends State<GroupMessageInput> {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 15),
                   child: TextField(
-                    // textInputAction: TextInputAction.go,
+                    autofocus: true,
                     onSubmitted: (value) {
                       msg = value;
                       if (widget.isCommonRoom) {
