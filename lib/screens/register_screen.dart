@@ -74,6 +74,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           'uid': userCredential.user?.uid,
           'userAccessControl': 3,
           'disable': 0,
+          'verified': false,
           'firstName': fName.trim(),
           'lastName': lName.trim(),
           'nickname': nickName.trim(),

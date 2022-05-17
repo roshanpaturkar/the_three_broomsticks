@@ -154,12 +154,15 @@ class _GroupMessageInputState extends State<GroupMessageInput> {
                     autofocus: true,
                     onSubmitted: (value) {
                       msg = value;
-                      if (widget.isCommonRoom) {
-                        sendMessageToCommonRoom();
+                      if (box.read('disable') < 1) {
+                        if (widget.isCommonRoom) {
+                          sendMessageToCommonRoom();
+                        } else {
+                          sendToCustomMessage();
+                        }
                       } else {
-                        sendToCustomMessage();
+                        Support.toast('You have view only access!');
                       }
-
                       messageFieldController.clear();
                     },
                     controller: messageFieldController,
@@ -188,10 +191,14 @@ class _GroupMessageInputState extends State<GroupMessageInput> {
               color: Colors.white,
               onPressed: () {
                 // checkBlockedUser();
-                if (widget.isCommonRoom) {
-                  sendMessageToCommonRoom();
+                if (box.read('disable') < 1) {
+                  if (widget.isCommonRoom) {
+                    sendMessageToCommonRoom();
+                  } else {
+                    sendToCustomMessage();
+                  }
                 } else {
-                  sendToCustomMessage();
+                  Support.toast('You have view only access!');
                 }
 
                 messageFieldController.clear();

@@ -53,7 +53,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
         backgroundColor: const Color(0xFF0181A20),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            Get.to(const CreateChatRoomScreen());
+            if (box.read('userAccessControl') < 3) {
+              Get.to(const CreateChatRoomScreen());
+            } else {
+              Support.toast('You don\'t have rights to create the room!');
+            }
           },
           backgroundColor: Colors.red,
           child: const Icon(Icons.group_add_rounded),
@@ -118,12 +122,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
                     return GestureDetector(
                       onTap: () {
-                        if (roomData['blockedUsers']
-                            .contains(box.read('uid'))) {
-                          Support.toast('Your blocked to access this room!');
+                        if (box.read('disable') < 2) {
+                          if (roomData['blockedUsers']
+                              .contains(box.read('uid'))) {
+                            Support.toast('Your blocked to access this room!');
+                          } else {
+                            Get.to(const CustomRoomScreen(),
+                                arguments: [roomData, docID]);
+                          }
                         } else {
-                          Get.to(const CustomRoomScreen(),
-                              arguments: [roomData, docID]);
+                          Support.toast('Your blocked from cafeteria!');
                         }
                       },
                       child: Container(
@@ -192,16 +200,21 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
                     return GestureDetector(
                       onTap: () {
-                        if (roomData['users'].contains(box.read('uid'))) {
-                          if (roomData['blockedUsers']
-                              .contains(box.read('uid'))) {
-                            Support.toast('Your blocked to access this room!');
+                        if (box.read('disable') < 2) {
+                          if (roomData['users'].contains(box.read('uid'))) {
+                            if (roomData['blockedUsers']
+                                .contains(box.read('uid'))) {
+                              Support.toast(
+                                  'Your blocked to access this room!');
+                            } else {
+                              Get.to(const CommonRoomScreen(),
+                                  arguments: [roomData, docID]);
+                            }
                           } else {
-                            Get.to(const CommonRoomScreen(),
-                                arguments: [roomData, docID]);
+                            Support.toast('You don\'t access to this room!');
                           }
                         } else {
-                          Support.toast('You don\'t access to this room!');
+                          Support.toast('Your blocked from common room!');
                         }
                       },
                       child: Container(
@@ -279,20 +292,26 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                   const EdgeInsets.symmetric(vertical: 8.0),
                               child: GestureDetector(
                                 onTap: () {
-                                  if (head['users'].contains(box.read('uid'))) {
-                                    if (head['blockedUsers']
+                                  if (box.read('disable') != 3) {
+                                    if (head['users']
                                         .contains(box.read('uid'))) {
-                                      Support.toast(
-                                          'Your blocked to access this room!');
+                                      if (head['blockedUsers']
+                                          .contains(box.read('uid'))) {
+                                        Support.toast(
+                                            'Your blocked to access this room!');
+                                      } else {
+                                        Get.to(
+                                          const CustomRoomScreen(),
+                                          arguments: [head, head.id],
+                                        );
+                                      }
                                     } else {
-                                      Get.to(
-                                        const CustomRoomScreen(),
-                                        arguments: [head, head.id],
-                                      );
+                                      Support.toast(
+                                          'You don\'t access to this room!');
                                     }
                                   } else {
                                     Support.toast(
-                                        'You don\'t access to this room!');
+                                        'Your blocked from all private room!');
                                   }
                                 },
                                 child: Container(
