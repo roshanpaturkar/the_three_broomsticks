@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -5,12 +6,47 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:platform_device_id/platform_device_id.dart';
 import 'package:the_three_broomsticks/screens/lock_screen.dart';
+import 'package:the_three_broomsticks/screens/login_screen.dart';
 import 'package:the_three_broomsticks/support/notification_support.dart';
 import 'package:the_three_broomsticks/support/support.dart';
 import 'package:the_three_broomsticks/versions/app_versions.dart';
 
 class BackgroundTasks {
   final box = GetStorage();
+
+  void checkSecuritySetting() {
+    print('Checking security setting!');
+  }
+
+  void checkUserDataChanges() {
+    print('Checking user data!');
+    final docRef =
+        FirebaseFirestore.instance.collection("users").doc(box.read('docId'));
+    docRef.snapshots().listen(
+      (event) {
+        var user = event.data();
+        box.write('uid', user!['uid']);
+        box.write('userAccessControl', user['userAccessControl']);
+        box.write('disable', user['disable']);
+        box.write('fName', user['firstName']);
+        box.write('lName', user['lastName']);
+        box.write('email', user['email']);
+        box.write('mobile', user['mobile']);
+        box.write('imageUrl', user['imageUrl']);
+        box.write('nickname', user['nickname']);
+        box.write('house', user['house']);
+        box.write('verified', user['verified']);
+        box.write('userAccessControl', user['userAccessControl']);
+
+        if (!user['verified']) {
+          Support.toast('Please contact admin for account verification!');
+          FirebaseAuth.instance.signOut();
+          Get.offAll(const LoginScreen());
+        }
+      },
+      onError: (error) => print("Listen failed: $error"),
+    );
+  }
 
   void checkAllowedVersions() {
     print('Check all allowed version service started!');
@@ -68,6 +104,7 @@ class BackgroundTasks {
   }
 
   void backgroundTasks() {
+    checkUserDataChanges();
     checkAllowedVersions();
     checkUpdates();
     updateTokens();

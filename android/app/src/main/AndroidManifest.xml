@@ -1,5 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.roshanpaturkar.d3broomsticks.the_three_broomsticks">
+
+    <uses-permission android:name="android.permission.INTERNET"/>
+
    <application
         android:label="D3Broomsticks"
         android:name="${applicationName}"

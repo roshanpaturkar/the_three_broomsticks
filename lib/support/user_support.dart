@@ -15,6 +15,7 @@ class UserSupport {
         .then(
           (value) => {
             value.docs.forEach((element) {
+              box.write('docId', element.id);
               box.write('uid', element.data()['uid']);
               box.write('userAccessControl', element.get('userAccessControl'));
               box.write('disable', element.get('disable'));
@@ -25,6 +26,8 @@ class UserSupport {
               box.write('imageUrl', element.get('imageUrl'));
               box.write('nickname', element.get('nickname'));
               box.write('house', element.get('house'));
+              box.write('verified', element.get('verified'));
+              box.write('userAccessControl', element.get('userAccessControl'));
             }),
           },
         );
@@ -54,5 +57,48 @@ class UserSupport {
         );
 
     refreshUserDetails();
+  }
+
+  static Future<void> updateUserData(var docId, var userDetails) async {
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(docId)
+        .update(userDetails)
+        .then((value) => print('User details updated!'))
+        .catchError((error) => print("Failed to add user: $error"));
+
+    refreshUserDetails();
+  }
+
+  static void addUserGroup(bool status, var user) async {
+    if (status) {
+      await FirebaseFirestore.instance
+          .collection('customRoomHead')
+          .doc('ZuyBq82quuQhQgpQX6oj')
+          .update({
+        'audience': FieldValue.arrayUnion([user['uid']])
+      });
+
+      await FirebaseFirestore.instance
+          .collection('commonRoomChatHeads')
+          .doc(user['house'].toString().toLowerCase())
+          .update({
+        'users': FieldValue.arrayUnion([user['uid']])
+      });
+    } else {
+      await FirebaseFirestore.instance
+          .collection('customRoomHead')
+          .doc('ZuyBq82quuQhQgpQX6oj')
+          .update({
+        'audience': FieldValue.arrayRemove([user['uid']])
+      });
+
+      await FirebaseFirestore.instance
+          .collection('commonRoomChatHeads')
+          .doc(user['house'].toString().toLowerCase())
+          .update({
+        'users': FieldValue.arrayRemove([user['uid']])
+      });
+    }
   }
 }

@@ -11,6 +11,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:liquid_progress_indicator/liquid_progress_indicator.dart';
+import 'package:the_three_broomsticks/screens/control_panel_screen.dart';
 import 'package:the_three_broomsticks/screens/dashboard_screen.dart';
 import 'package:the_three_broomsticks/screens/login_screen.dart';
 import 'package:the_three_broomsticks/support/support.dart';
@@ -316,6 +317,39 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ],
                   ),
                 ),
+                const SizedBox(
+                  height: 22,
+                ),
+                box.read('userAccessControl') == 0
+                    ? Container(
+                        width: 220,
+                        height: 50,
+                        decoration: BoxDecoration(
+                          color: Colors.red,
+                          borderRadius: BorderRadius.circular(24),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            TextButton(
+                              onPressed: () {
+                                Get.to(const ControlPanelScreen());
+                              },
+                              child: const Text(
+                                'Control Panel',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ),
+                            startDeleteBouncer
+                                ? const SpinKitDoubleBounce(
+                                    color: Colors.white,
+                                    size: 50.0,
+                                  )
+                                : const SizedBox(),
+                          ],
+                        ),
+                      )
+                    : const Text(''),
                 const SizedBox(
                   height: 22,
                 ),

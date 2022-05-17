@@ -127,7 +127,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         }
                       },
                       child: Container(
-                        width: 390,
+                        width: 380,
                         padding: const EdgeInsets.fromLTRB(4, 10, 4, 10),
                         decoration: BoxDecoration(
                           color: const Color(0xFF262A34),
@@ -146,7 +146,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                               backgroundColor: const Color(0xFF262A34),
                             ),
                             const SizedBox(
-                              width: 24.0,
+                              width: 12.0,
                             ),
                             Text(
                               '${roomData['name']} !',
@@ -205,7 +205,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         }
                       },
                       child: Container(
-                          width: 390,
+                          width: 380,
                           padding: const EdgeInsets.fromLTRB(30, 10, 30, 10),
                           decoration: BoxDecoration(
                             color: const Color(0xFF262A34),
@@ -223,7 +223,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                 backgroundColor: const Color(0xFF262A34),
                               ),
                               const SizedBox(
-                                width: 24.0,
+                                width: 12.0,
                               ),
                               Text(
                                 '${roomData['name']} !',
@@ -245,7 +245,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 ),
                 Expanded(
                   child: Container(
-                    width: 390,
+                    width: 380,
                     child: StreamBuilder<QuerySnapshot>(
                       stream: firestore
                           .collection('customRoomHead')
@@ -296,7 +296,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                   }
                                 },
                                 child: Container(
-                                  width: 390,
+                                  width: 380,
                                   padding:
                                       const EdgeInsets.fromLTRB(30, 10, 30, 10),
                                   decoration: BoxDecoration(
@@ -317,7 +317,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                             const Color(0xFF262A34),
                                       ),
                                       const SizedBox(
-                                        width: 24.0,
+                                        width: 12.0,
                                       ),
                                       Text(
                                         '${head['name']} !',
