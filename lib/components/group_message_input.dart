@@ -25,6 +25,19 @@ class GroupMessageInput extends StatefulWidget {
 
 class _GroupMessageInputState extends State<GroupMessageInput> {
   final box = GetStorage();
+  late FocusNode myFocusNode;
+
+  @override
+  void initState() {
+    super.initState();
+    myFocusNode = FocusNode();
+  }
+
+  @override
+  void dispose() {
+    myFocusNode.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -151,6 +164,7 @@ class _GroupMessageInputState extends State<GroupMessageInput> {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 15),
                   child: TextField(
+                    focusNode: myFocusNode,
                     autofocus: true,
                     onSubmitted: (value) {
                       msg = value;
@@ -164,6 +178,7 @@ class _GroupMessageInputState extends State<GroupMessageInput> {
                         Support.toast('You have view only access!');
                       }
                       messageFieldController.clear();
+                      myFocusNode.requestFocus();
                     },
                     controller: messageFieldController,
                     onChanged: (val) {
@@ -200,7 +215,7 @@ class _GroupMessageInputState extends State<GroupMessageInput> {
                 } else {
                   Support.toast('You have view only access!');
                 }
-
+                myFocusNode.requestFocus();
                 messageFieldController.clear();
               },
             ),
