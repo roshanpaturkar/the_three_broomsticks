@@ -102,6 +102,7 @@ class _CreateChatRoomScreenState extends State<CreateChatRoomScreen> {
                   controller: roomNameFieldController,
                   cursorColor: Colors.white,
                   obscureText: false,
+                  maxLength: 22,
                   keyboardType: TextInputType.name,
                   decoration: const InputDecoration(
                     border: InputBorder.none,
@@ -137,7 +138,7 @@ class _CreateChatRoomScreenState extends State<CreateChatRoomScreen> {
                       );
                     }
 
-                    return Container(
+                    return SizedBox(
                       width: 350,
                       child: ListView.builder(
                         physics: const BouncingScrollPhysics(),

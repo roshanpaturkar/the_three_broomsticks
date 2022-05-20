@@ -258,7 +258,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 ),
                 Expanded(
                   child: Container(
-                    width: 380,
+                    width: 360,
                     child: StreamBuilder<QuerySnapshot>(
                       stream: firestore
                           .collection('customRoomHead')
@@ -315,16 +315,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                   }
                                 },
                                 child: Container(
-                                  width: 380,
+                                  width: 350,
                                   padding:
-                                      const EdgeInsets.fromLTRB(30, 10, 30, 10),
+                                      const EdgeInsets.fromLTRB(15, 10, 15, 10),
                                   decoration: BoxDecoration(
                                     color: const Color(0xFF262A34),
                                     borderRadius: BorderRadius.circular(24),
                                   ),
                                   child: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       CircleAvatar(
                                         foregroundImage:
