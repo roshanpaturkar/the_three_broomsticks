@@ -48,7 +48,6 @@ class _CommonRoomScreenState extends State<CommonRoomScreen> {
             child: SizedBox(
               width: 380,
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   CircleAvatar(
                     foregroundImage: NetworkImage(Get.arguments[0]['icon']),
@@ -56,6 +55,9 @@ class _CommonRoomScreenState extends State<CommonRoomScreen> {
                         'images/${box.read('house').toLowerCase()}.png'),
                     radius: 16,
                     backgroundColor: const Color(0xFF262A34),
+                  ),
+                  const SizedBox(
+                    width: 16.0,
                   ),
                   Text(
                     '${Get.arguments[0]['name']} !',
