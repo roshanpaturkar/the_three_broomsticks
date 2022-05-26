@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:the_three_broomsticks/components/group_message_input.dart';
 import 'package:the_three_broomsticks/components/message_tiles.dart';
 import 'package:the_three_broomsticks/screens/common_room_info_screen.dart';
+import 'package:the_three_broomsticks/support/chat_maintenance.dart';
 import 'package:the_three_broomsticks/support/chat_room_support.dart';
 import 'package:the_three_broomsticks/support/support.dart';
 
@@ -102,6 +103,17 @@ class _CustomRoomScreenState extends State<CustomRoomScreen> {
                             List messageDataKeys = data.keys.toList()..sort();
                             List messageKeys =
                                 messageDataKeys.reversed.toList();
+
+                            print(messageKeys.length);
+
+                            if (messageKeys.length > 121) {
+                              ChatMaintenance chatMaintenance =
+                                  ChatMaintenance();
+                              chatMaintenance.clearOldChat(
+                                  Get.arguments[0]['roomPath'],
+                                  messageDataKeys.sublist(
+                                      0, (messageKeys.length - 122)));
+                            }
 
                             return ListView.builder(
                                 reverse: true,

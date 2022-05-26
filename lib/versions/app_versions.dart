@@ -1,3 +1,3 @@
 class AppVersion {
-  static var version = '1.5';
+  static var version = '1.6';
 }
